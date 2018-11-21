@@ -1,0 +1,69 @@
+<?page title="Quản lý thông báo" contentType="text/html;charset=UTF-8"?>
+<div xmlns:zk="zk" xmlns:n="native" xmlns:x="xhtml" apply="org.zkoss.bind.BindComposer"
+	viewModel="@id('vm') @init('vn.toancauxanh.cms.service.ThongKeService')">
+	<zscript><![CDATA[
+		self.page.title= "Quản lý bài viết";
+	]]></zscript>
+	<n:section class="content-header">
+		<n:h1 class="header-title">Thống kê chung</n:h1>
+	</n:section>
+	<n:section class="content">
+	    <n:div class="row">
+    		<n:div class="col-md-12">
+    			<n:div class="box box-success">
+    				<n:div class="box-header">
+	    				<n:h3 class="box-title"></n:h3>
+	    			</n:div>
+    				<n:div class="box-body">
+    					<n:div class="row">
+    					
+    						<n:div class="col-md-4">
+    							<n:div
+    								class="card text-white btn-success" style="border: 1px solid;border-radius: 19px;">
+    								<n:div class="card-body">
+    									<n:div class="text-center">
+	    									<n:a style="color: black" href="${ctxPath}/cp/thutien">
+												<n:i class="fa fa-plus"></n:i><n:h4>Số tiền đã thu</n:h4>
+											</n:a>
+    									</n:div>
+    									<n:div class="text-center">
+    										<label style="font-size: 50px;" value="@bind(c:formatNumber(vm.toTalThu, '#,###.##'))"></label><n:small> VNĐ</n:small>	
+    									</n:div>
+    								</n:div>
+    							</n:div>
+    						</n:div>
+    						<n:div class="col-md-4">
+    							<n:div class="card text-white btn-danger"  style="border: 1px solid;border-radius: 19px;">
+    								<n:div class="card-body">
+    									<n:div class="text-center">
+    										<n:a style="color: black" href="${ctxPath}/cp/phieuchi">
+												<n:i class="fa fa-minus"></n:i><n:h4>Số tiền đã chi</n:h4>
+											</n:a>
+    									</n:div>
+    									<n:div class="text-center">
+    										<label  style="font-size: 50px;" value="@bind(c:formatNumber(vm.toTalChi, '#,###.##'))"></label><n:small> VNĐ</n:small>
+    									</n:div>
+    								</n:div>
+    							</n:div>
+    						</n:div>
+    						<n:div class="col-md-4">
+    							<n:div class="card text-white btn-primary"  style="border: 1px solid;border-radius: 19px;">
+    								<n:div class="card-body">
+    									<n:div class="text-center">
+    										<n:a style="color: black" href="${ctxPath}/cp/thongke">
+												<n:i class="fa fa-fw fa-life-ring"></n:i><n:h4>Số tiền còn lại</n:h4>
+											</n:a>
+    									</n:div>
+    									<n:div class="text-center">
+    										<label style="font-size: 50px;" value="@bind(c:formatNumber(vm.soDu, '#,###.##'))"></label><n:small> VNĐ</n:small>
+    									</n:div>
+    								</n:div>
+    							</n:div>
+    						</n:div>
+    					</n:div>
+    				</n:div>
+    			</n:div>
+			</n:div>   
+	    </n:div>
+	</n:section>
+</div>

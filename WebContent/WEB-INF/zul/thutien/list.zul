@@ -1,0 +1,33 @@
+<?page title="Quản lý car" contentType="text/html;charset=UTF-8"?>
+<div xmlns:zk="zk" xmlns:n="native" xmlns:x="xhtml">
+
+	<zscript>
+		<![CDATA[
+			self.page.title = "Quản Lý thu tiền";
+		]]>
+	</zscript>
+	
+	<style>
+	
+		.tab-link {
+			font-size: 16px;
+		    padding-left: 55px;
+		    padding-right: 55px;
+		}
+	
+	</style>
+	
+	<n:ul class="nav nav-tabs">
+	    <n:li class="active"><n:a class="tab-link" data-toggle="tab" href="#home">Quản lý thu quỹ</n:a></n:li>
+	    <n:li><n:a class="tab-link" data-toggle="tab" href="#menu1">Quản lý thu khác</n:a></n:li>
+	</n:ul>
+
+	  <n:div class="tab-content">
+	    <n:div id="home" class="tab-pane fade in active">
+	      	<include instant="true" src="/WEB-INF/zul/thutien/lydo/list-lydothu.zul"></include>
+	    </n:div>
+	    <n:div id="menu1" class="tab-pane fade">
+	     	<include instant="true" src="/WEB-INF/zul/thutien/thukhac/list-thukhac.zul"></include>
+	    </n:div>
+	  </n:div>	
+</div>

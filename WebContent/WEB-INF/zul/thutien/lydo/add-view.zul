@@ -1,0 +1,47 @@
+<window xmlns:n="native" xmlns:x="xhtml" xmlns:zk="zk" id="wdn"
+	border="normal" mode="modal" action="show: slideIn" closable="true"
+	title="${arg.save}" viewModel="@id('vm') @init(arg.model)"
+	validationMessages="@id('vmsgs')" width="400px"
+	form="@id('fx') @load(vm) @save(vm, before={'saveLyDoThu'}) @validator(vm.validatorLyDoThu)"
+	onClose="@command('invokeGG', notify=vmArgs, detach=wdn, attr='targetQuery')">
+
+		<zscript>
+			vmArgs = arg.get("vmArgs");
+		</zscript>
+		<zscript><![CDATA[
+			nhanViens = entry.nhanViens;
+		]]></zscript>
+
+		<n:div class="row box-body">
+			<n:div class="col-md-12">
+				<n:div class="form-group">
+					<hlayout class="control-label">
+						<x:label class="control-label">Số tiền<n:small class="required"> *</n:small></x:label>
+					</hlayout>
+					<vlayout>
+						<combobox readonly="true" style="display:block" width="99%" placeholder="Chọn số tiền quỹ cần nộp" model="@load(entry.allTienQuyMacDinh)" selectedItem="@bind(vm.soTien) @save(vm.soTien, before={'saveLyDoThu'}) @validator('vn.toancauxanh.vm.BaseValid', constraint='no empty')">
+						<template name="model">
+							<comboitem value="@load(each)" label="@load(c:formatNumber(each, '$ #,###.## vnđ'))" />
+						</template>
+					</combobox>
+					<label zclass="error" value="@load(vmsgs[self.previousSibling])" />
+					</vlayout>
+				</n:div>
+				<n:div class="form-group">
+					<hlayout class="control-label">
+						<x:label>Lý do nộp<n:small class="required"> *</n:small></x:label>
+					</hlayout>
+					<vlayout>
+						<textbox class="form-control" width="100%" rows="4" value="@bind(vm.lyDoContent) @save(vm.lyDoContent, before={'saveLyDoThu'}) @validator('vn.toancauxanh.vm.BaseValid', constraint='no empty')"></textbox>
+						<label class="error" value="@load(vmsgs[self.previousSibling])"></label>
+						<label class="error" value="@load(vmsgs['lyDoContextError'])"></label>
+					</vlayout>
+				</n:div>
+			</n:div>
+		</n:div>
+		
+		<n:div class="row box-footer">
+			<x:button class="btn btn-success" onClick="@command('saveLyDoThu', list=vmArgs, attr='targetQuery', wdn=wdn)"><n:i class="fa fa-save"></n:i>&#160;Lưu</x:button>
+			<x:button class="btn btn-default" onClick="@command('invokeGG', notify=vmArgs, detach=wdn, attr='targetQuery')"><n:i class="fa fa-times-circle"></n:i>&#160;Hủy</x:button>
+		</n:div>
+</window>

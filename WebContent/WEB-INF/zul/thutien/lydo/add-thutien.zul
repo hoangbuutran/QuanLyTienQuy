@@ -1,0 +1,51 @@
+<window xmlns:n="native" xmlns:x="xhtml" xmlns:zk="zk" id="wdn"
+	border="normal" mode="modal" action="show: slideIn" closable="true" title="Check tiền nộp" 
+	viewModel="@id('vm') @init(arg.vm)"
+	validationMessages="@id('vmsgs')" width="600px"
+	onClose="@command('invokeGG', notify=vmArgs, detach=wdn, attr='targetQuery')">
+
+	<zscript>
+			vmArgs = arg.get("vmArgs");
+		</zscript>
+		<style>
+		
+			.da-nop {
+				background: #7af149;
+			}
+			.chua-nop{
+				background: #d42e1d;
+			}
+		
+		</style>
+		<n:br></n:br>
+			<listbox model="@load(vm.modelThuTien)">
+                  <listhead>
+                  		  <listheader label="STT" hflex="min" sclass="text-align-center"></listheader>
+                          <listheader label="Tên Nhân viên" width="50%" sclass="text-align-center"></listheader>
+                          <listheader label="Trạng thái nộp" width="30%" sclass="text-align-center"></listheader>
+                          <listheader zk:if="${!vm.complete}" label="Mail nhắc nộp" width="20%" sclass="text-align-center"></listheader>
+                  </listhead>
+                  <template name="model">
+                  	<listitem>
+                  		<listcell sclass="text-align-center">
+                  			<label value="@load(forEachStatus.index + 1)"></label>
+                  		</listcell>
+                  		<listcell>
+                  			<label value="@load(each.nguoiNop.hoVaTen)"></label>
+                  		</listcell>
+                  		<listcell sclass="text-align-center">
+                  			<checkbox  checked="@bind(each.xacNhan)" disabled="${!(entry.quyen.thutien_them) or !(entry.quyen.thutien_sua)}"/>
+                  		</listcell>
+                  		<listcell zk:if="${!vm.complete}" sclass="text-align-center">
+							<x:a class="btn btn-default btn-xs" onClick="@command('sendMailNhacNopQuy', item=each)" zk:if="${!each.xacNhan}"><n:i class="fa fa-envelope-square" style="color: red;"></n:i></x:a>
+                  		</listcell>
+                  	</listitem>
+                  </template>
+
+			</listbox>
+		<n:div class="row box-footer">
+			<x:button zk:if="${(vm.noId() and entry.quyen.thutien_them) or (!vm.noId() and entry.quyen.thutien_sua)}" class="btn btn-success" onClick="@command('saveNhanVienAndQuy', list=vmArgs, attr='targetQuery', wdn=wdn)"><n:i class="fa fa-save"></n:i>&#160;Lưu</x:button>
+			<x:button class="btn btn-default" onClick="@command('invokeGG', notify=vmArgs, detach=wdn, attr='targetQuery')"><n:i class="fa fa-times-circle"></n:i>&#160;Hủy</x:button>
+		</n:div>
+
+</window>

@@ -1,0 +1,39 @@
+<window xmlns:n="native" xmlns:x="xhtml" xmlns:zk="zk" id="wdn"
+	border="normal" mode="modal" action="show: slideIn" closable="true"
+	title="${arg.save}" viewModel="@id('vm') @init(arg.model)"
+	validationMessages="@id('vmsgs')" width="400px"
+	form="@id('fx') @load(vm) @save(vm, before={'saveThuKhac'}) @validator(vm.validatorLyDoThu)"
+	onClose="@command('invokeGG', notify=vmArgs, detach=wdn, attr='targetQuery')">
+
+		<zscript>
+			vmArgs = arg.get("vmArgs");
+		</zscript>
+		<n:div class="row box-body">
+			<n:div class="col-md-12">
+
+				<n:div class="form-group">
+					<hlayout class="control-label">
+						<x:label>Số tiền<n:small class="required"> *</n:small></x:label>
+					</hlayout>
+					<vlayout>
+						<doublebox class="form-control" format=",###.#" width="100%" value="@bind(vm.soTien) @save(vm.soTien, before={'saveThuKhac'}) @validator('vn.toancauxanh.vm.BaseValid', constraint='no empty')" disabled="${!(entry.quyen.thutien_sua)}"></doublebox>
+						<label class="error" value="@load(vmsgs[self.previousSibling])"></label>
+					</vlayout>
+				</n:div>
+				<n:div class="form-group">
+					<hlayout class="control-label">
+						<x:label>Lý do nộp<n:small class="required"> *</n:small></x:label>
+					</hlayout>
+					<vlayout>
+						<textbox  disabled="${!(entry.quyen.thutien_sua)}" class="form-control" width="100%" rows="4" value="@bind(vm.lyDoContent) @save(vm.lyDoContent, before={'saveThuKhac'}) @validator('vn.toancauxanh.vm.BaseValid', constraint='no empty')"></textbox>
+						<label class="error" value="@load(vmsgs[self.previousSibling])"></label>
+					</vlayout>
+				</n:div>
+			</n:div>
+		</n:div>
+		
+		<n:div class="row box-footer">
+			<x:button zk:if="${entry.quyen.thutien_them and entry.quyen.thutien_sua}" class="btn btn-success" onClick="@command('saveThuKhac', list=vmArgs, attr='targetQueryThuKhac', wdn=wdn)"><n:i class="fa fa-save"></n:i>&#160;Lưu</x:button>
+			<x:button class="btn btn-default" onClick="@command('invokeGG', notify=vmArgs, detach=wdn, attr='targetQuery')"><n:i class="fa fa-times-circle"></n:i>&#160;Hủy</x:button>
+		</n:div>
+</window>
