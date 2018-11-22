@@ -34,10 +34,10 @@
                   			<label value="@load(each.nguoiNop.hoVaTen)"></label>
                   		</listcell>
                   		<listcell sclass="text-align-center">
-                  			<checkbox  checked="@bind(each.xacNhan)" disabled="${!(entry.quyen.thutien_them) or !(entry.quyen.thutien_sua)}"/>
+                  			<checkbox  checked="@bind(each.xacNhan)" disabled="${!(entry.quyen.thutien_them) or !(entry.quyen.thutien_sua)}" tooltiptext="@bind(each.xacNhan ? 'chọn để hủy đã nộp':'chọn để xác nhận đã nộp')"/>
                   		</listcell>
                   		<listcell zk:if="${!vm.complete}" sclass="text-align-center">
-							<x:a class="btn btn-default btn-xs" onClick="@command('sendMailNhacNopQuy', item=each)" zk:if="${!each.xacNhan}"><n:i class="fa fa-envelope-square" style="color: red;"></n:i></x:a>
+							<x:a class="btn btn-default btn-xs" title="Gửi mail nhắc nộp quỹ" onClick="@command('sendMailNhacNopQuy', item=each)" zk:if="${!each.xacNhan}"><n:i class="fa fa-envelope-square" style="color: red;"></n:i></x:a>
                   		</listcell>
                   	</listitem>
                   </template>

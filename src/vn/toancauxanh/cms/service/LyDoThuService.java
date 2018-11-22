@@ -31,26 +31,13 @@ public class LyDoThuService extends BasicService<LyDoThu> {
 		
 		String paramTrangThaiThuTien = MapUtils.getString(argDeco(), Labels.getLabel("param.trangthaithutien"), "");
 		
-		/*if (argDeco().get(Labels.getLabel("param.trangthaithutien")) != null && !paramTrangThaiThuTien.isEmpty()) {
-			
-			boolean trangThaiThuTien = MapUtils.getBooleanValue(argDeco(), Labels.getLabel("param.trangthaithutien"));
-			if (trangThaiThuTien) {
-				
-				System.out.println("true:" + trangThaiThuTien);
-				q.where(QLyDoThu.lyDoThu.complete.isTrue());
-			} else if(!trangThaiThuTien){
-				
-				System.out.println("false:" + trangThaiThuTien);
-				q.where(QLyDoThu.lyDoThu.complete.isFalse());
-			}
-		}*/
 		System.out.println("hihi: "+paramTrangThaiThuTien);
 		if ("true".equals(paramTrangThaiThuTien)) {
-			System.out.println("hihi2");
+			System.out.println("true");
 			q.where(QLyDoThu.lyDoThu.complete.isTrue());
 		}
 		if ("false".equals(paramTrangThaiThuTien)) {
-			System.out.println("hihi3");
+			System.out.println("false");
 			q.where(QLyDoThu.lyDoThu.complete.isFalse());
 		}
 		q.orderBy(QLyDoThu.lyDoThu.ngaySua.desc());

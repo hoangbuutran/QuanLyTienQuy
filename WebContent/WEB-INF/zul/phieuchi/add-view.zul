@@ -86,5 +86,4 @@
 			<x:button class="btn btn-default" onClick="@command('invokeGG', notify=vmArgs, detach=wdn, attr='targetQuery')"><n:i class="fa fa-times-circle"></n:i>&#160;Hủy</x:button>
 		</n:div>
 		
-		
 </window>

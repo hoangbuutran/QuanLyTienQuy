@@ -72,7 +72,7 @@
 						<n:div class="box-tools pull-right">
 						
 							<x:button zk:if="${entry.quyen.phieuchi_them}"  class="btn btn-success" onClick="@command('redirectPage', zul='phieuchi/add.zul', vmArgs=vm, vm=null)">
-								<n:i class="fa-fa-plus"></n:i>&#160;Add new
+								<n:i class="fa fa-plus"></n:i>&#160;Thêm mới
 							</x:button>
 
 						</n:div>
