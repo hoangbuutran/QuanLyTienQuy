@@ -211,7 +211,7 @@ public class Category extends Model<Category> {
 				.where(QCategory.category.parent.eq(getParent()))
 				.where(QCategory.category.trangThai.ne(core().TT_DA_XOA))
 				.fetch();
-		if (isAdd) {			
+		if (isAdd) {
 			setSoThuTu(list.size()+1);
 			node1.add(getNode());
 		}

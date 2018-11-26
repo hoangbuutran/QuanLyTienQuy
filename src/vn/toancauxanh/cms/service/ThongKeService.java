@@ -32,6 +32,7 @@ public class ThongKeService extends BasicService<LyDoThu> {
 			}
 			return toTalThu;
 		}
+		
 		if (!thang.isEmpty() && nam.isEmpty()) {
 			for (ThuTien thuTien : thuTiens) {
 				toTalThu += thuTien.getLyDoThu().getSoTien();
@@ -39,6 +40,7 @@ public class ThongKeService extends BasicService<LyDoThu> {
 			showNotification("năm chưa được chọn !", "", "warning");
 			return toTalThu;
 		}
+		
 		if (!thang.isEmpty() && !nam.isEmpty()) {
 			for (ThuTien thuTien : thuTiens) {
 				if (thuTien.getLyDoThu().getLyDoContent().contains("\"")) {
@@ -53,6 +55,7 @@ public class ThongKeService extends BasicService<LyDoThu> {
 				}
 			}
 		}
+		
 		if (thang.isEmpty() && !nam.isEmpty()) {
 			for (ThuTien thuTien : thuTiens) {
 				if (thuTien.getLyDoThu().getLyDoContent().contains("\"")) {
@@ -66,6 +69,7 @@ public class ThongKeService extends BasicService<LyDoThu> {
 				}
 			}
 		}
+		
 		return toTalThu;
 	}
 
@@ -85,6 +89,7 @@ public class ThongKeService extends BasicService<LyDoThu> {
 			}
 			return toTalChi;
 		}
+		
 		if (!thang.isEmpty() && nam.isEmpty()) {
 			for (PhieuChi phieuChi : phieuChis) {
 				toTalChi += phieuChi.getTongSoTien();
@@ -92,6 +97,7 @@ public class ThongKeService extends BasicService<LyDoThu> {
 			showNotification("năm chưa được chọn !", "", "warning");
 			return toTalChi;
 		}
+		
 		if (!thang.isEmpty() && !nam.isEmpty()) {
 			for (PhieuChi phieuChi : phieuChis) {
 				if (1+phieuChi.getNgayTao().getMonth() == Integer.parseInt(thang) && 1900 + phieuChi.getNgayTao().getYear() == Integer.parseInt(nam)) {
@@ -99,6 +105,7 @@ public class ThongKeService extends BasicService<LyDoThu> {
 				}
 			}
 		}
+		
 		if (thang.isEmpty() && !nam.isEmpty()) {
 			for (PhieuChi phieuChi : phieuChis) {
 				if (1900 + phieuChi.getNgayTao().getYear() == Integer.parseInt(nam)) {
@@ -114,31 +121,30 @@ public class ThongKeService extends BasicService<LyDoThu> {
 		return getToTalThu() - getToTalChi();
 	}
 
-	public Map<String, String> getListThang() {
-		HashMap<String, String> result = new HashMap<>();
+	public Map<Integer, String> getListThang() {
+		HashMap<Integer, String> result = new HashMap<>();
 		result.put(null, "      ");
-		result.put("1", "Tháng 1");
-		result.put("2", "Tháng 2");
-		result.put("3", "Tháng 3");
-		result.put("4", "Tháng 4");
-		result.put("5", "Tháng 5");
-		result.put("6", "Tháng 6");
-		result.put("7", "Tháng 7");
-		result.put("8", "Tháng 8");
-		result.put("9", "Tháng 9");
-		result.put("10", "Tháng 10");
-		result.put("11", "Tháng 11");
-		result.put("12", "Tháng 12");
+		result.put(1, "Tháng 1");
+		result.put(2, "Tháng 2");
+		result.put(3, "Tháng 3");
+		result.put(4, "Tháng 4");
+		result.put(5, "Tháng 5");
+		result.put(6, "Tháng 6");
+		result.put(7, "Tháng 7");
+		result.put(8, "Tháng 8");
+		result.put(9, "Tháng 9");
+		result.put(10, "Tháng 10");
+		result.put(11, "Tháng 11");
+		result.put(12, "Tháng 12");
 		return result;
 	}
 	
-	public Map<String, String> getListNam() {
-		HashMap<String, String> result = new HashMap<>();
+	public Map<Integer, String> getListNam() {
+		HashMap<Integer, String> result = new HashMap<>();
 		result.put(null, "      ");
 		int yearNow = Calendar.getInstance().get(Calendar.YEAR);
-		for (int i = 0; i <= 20; i++) {
-			String nam = String.valueOf(yearNow + i);
-			result.put(nam, "Năm " + nam);
+		for (int i = 0; i <= 10; i++) {
+			result.put(yearNow + i, "Năm " + (yearNow + i));
 		}
 		return result;
 	}

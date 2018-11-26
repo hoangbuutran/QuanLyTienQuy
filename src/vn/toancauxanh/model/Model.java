@@ -234,6 +234,14 @@ public class Model<T extends Model<T>> extends BaseObject<T> {
 		}
 		return "label label-default";
 	}
+	
+	@Transient
+	public String setStyleHoanThanh(String hoanThanh) {
+		if (hoanThanh.equals("da_hoan_thanh")) {
+			return "label label-success";
+		}
+		return "label label-default";
+	}
 
 	protected String businessKey() {
 		return getClass().getName() + "@" + getId();

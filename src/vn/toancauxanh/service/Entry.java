@@ -56,6 +56,11 @@ public class Entry extends BaseObject<Object> {
 	public String TT_DA_XOA = "";
 	@Value("${trangthai.khongapdung}")
 	public String TT_KHONG_AP_DUNG = "";
+	
+	@Value("${trangthai.dahoanthanh}")
+	public String TT_THU_DA_HOAN_THANH = "";
+	@Value("${trangthai.chuahoanthanh}")
+	public String TT_THU_CHUA_HOAN_THANH = "";
 
 	// No image url
 	public String URL_M_NOIMAGE = "/assetsfe/images/lg_noimage.png";

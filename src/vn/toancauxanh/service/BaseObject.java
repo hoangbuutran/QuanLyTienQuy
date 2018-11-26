@@ -300,8 +300,8 @@ public class BaseObject<T> extends CoreObject<T> {
 	public Map<String, String> getTrangThaiThuTienList() {
 		HashMap<String, String> result = new HashMap<>();
 		result.put(null, "      ");
-		result.put("false", "Chưa hoàn thành");
-		result.put("true", "Đã hoàn thành");
+		result.put("da_hoan_thanh", "Đã hoàn thành");
+		result.put("chua_hoan_thanh", "Chưa hoàn thành");
 		return result;
 	}
 	

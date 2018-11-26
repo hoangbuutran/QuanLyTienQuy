@@ -21,6 +21,7 @@ import com.querydsl.jpa.impl.JPAQuery;
 import vn.toancauxanh.model.Model;
 import vn.toancauxanh.model.NhanVien;
 import vn.toancauxanh.model.QNhanVien;
+import vn.toancauxanh.service.BasicService;
 import vn.toancauxanh.service.SendEmail;
 
 @Entity
@@ -29,8 +30,7 @@ public class LyDoThu extends Model<LyDoThu> {
 
 	private double soTien;
 	private String lyDoContent = "Nộp tiền quỹ tháng: \"" + (Calendar.getInstance().get(Calendar.MONTH)+1) + "\" - năm: \"" + Calendar.getInstance().get(Calendar.YEAR) + "\"";
-	private String lyDoKeyWord;
-	private boolean complete;
+	private String complete;
 	private boolean quy = true;
 
 	List<ThuTien> modelThuTien;
@@ -38,21 +38,14 @@ public class LyDoThu extends Model<LyDoThu> {
 	public LyDoThu() {
 		super();
 	}
-	public LyDoThu(double soTien, String lyDoContent, String lyDoKeyWord, boolean complete, boolean quy) {
+	public LyDoThu(double soTien, String lyDoContent, String complete, boolean quy) {
 		super();
 		this.soTien = soTien;
 		this.lyDoContent = lyDoContent;
-		this.lyDoKeyWord = lyDoKeyWord;
 		this.complete = complete;
 		this.quy = quy;
 	}
 
-	public String getLyDoKeyWord() {
-		return lyDoKeyWord;
-	}
-	public void setLyDoKeyWord(String lyDoKeyWord) {
-		this.lyDoKeyWord = lyDoKeyWord;
-	}
 	public boolean isQuy() {
 		return quy;
 	}
@@ -71,10 +64,10 @@ public class LyDoThu extends Model<LyDoThu> {
 	public void setLyDoContent(String lyDoContent) {
 		this.lyDoContent = lyDoContent;
 	}
-	public boolean isComplete() {
+	public String getComplete() {
 		return complete;
 	}
-	public void setComplete(boolean complete) {
+	public void setComplete(String complete) {
 		this.complete = complete;
 	}
 
@@ -93,13 +86,12 @@ public class LyDoThu extends Model<LyDoThu> {
 
 	// lưu lý do thu và thêm dữ liệu vào bảng thu tiền ứng với số nhân viên(được gọi từ hàm saveLyDoThu)
 	public void saveQuyAndAddThuTien() {
-		lyDoKeyWord = "ly-do-" + Calendar.getInstance().getTimeInMillis();
 		setQuy(true);
+		setComplete(core().TT_THU_CHUA_HOAN_THANH);
 		save();
-		LyDoThu lyDoThu = this.<LyDoThu>query().from(QLyDoThu.lyDoThu).where(QLyDoThu.lyDoThu.lyDoKeyWord.eq(lyDoKeyWord)).fetchFirst();
 		List<NhanVien> nhanViens = queryNhanVien().fetch();
 		for (NhanVien nhanVien : nhanViens) {
-			ThuTien thuTien = new ThuTien(lyDoThu, nhanVien, false);
+			ThuTien thuTien = new ThuTien(this, nhanVien, false);
 			thuTien.save();
 		}
 	}
@@ -129,11 +121,10 @@ public class LyDoThu extends Model<LyDoThu> {
 
 	// lưu lý do thu và thêm dữ liệu vào bảng thu tiền (được gọi từ hàm saveThuKhac)
 	public void saveThuKhacAndAddThuTien() {
-		lyDoKeyWord = "ly-do-" + Calendar.getInstance().getTimeInMillis();
 		setQuy(false);
+		setComplete(core().TT_THU_DA_HOAN_THANH);
 		save();
-		LyDoThu lyDoThu = this.<LyDoThu>query().from(QLyDoThu.lyDoThu).where(QLyDoThu.lyDoThu.lyDoKeyWord.eq(lyDoKeyWord)).fetchFirst();
-		ThuTien thuTien = new ThuTien(lyDoThu, getNguoiTao(), true);
+		ThuTien thuTien = new ThuTien(this, getNguoiTao(), true);
 		thuTien.save();
 	}
 	
@@ -149,10 +140,10 @@ public class LyDoThu extends Model<LyDoThu> {
 			thuTien.save();
 		}
 		if (totalNhanVien == totalDaNop) {
-			setComplete(true);
+			setComplete(core().TT_THU_DA_HOAN_THANH);
 			this.save();
 		}else {
-			setComplete(false);
+			setComplete(core().TT_THU_CHUA_HOAN_THANH);
 			this.save();
 		}
 		wdn.detach();
@@ -211,5 +202,9 @@ public class LyDoThu extends Model<LyDoThu> {
 	@Transient
 	public List<ThuTien> getModelThuTien() {
 		return modelThuTien;
+	}
+	@Transient
+	public String getHoanThanhText() {
+		return new BasicService<>().getTrangThaiThuTienList().get(getComplete());
 	}
 }

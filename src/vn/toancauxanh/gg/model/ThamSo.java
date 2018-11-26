@@ -5,7 +5,6 @@ import java.io.IOException;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.Index;
 import javax.persistence.Table;
 
 import org.zkoss.bind.annotation.BindingParam;
@@ -21,7 +20,6 @@ public class ThamSo extends Model<ThamSo> {
 	
 	private ThamSoEnum ma;
 	private String value;
-	
 	
 	public String getValue() {
 		return value;
