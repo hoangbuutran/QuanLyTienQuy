@@ -2,7 +2,6 @@ package vn.toancauxanh.gg.model;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,15 +34,8 @@ public class PhieuChi extends Model<PhieuChi> {
 	private double tongSoTien;
 	private String lyDo;
 	private NhanVien nguoiChi;
-	private String lyDoKeyWord;
 	private List<ChiTietPhieuChi> arrayRemoveItem = new ArrayList<ChiTietPhieuChi>();
 	
-	public String getLyDoKeyWord() {
-		return lyDoKeyWord;
-	}
-	public void setLyDoKeyWord(String lyDoKeyWord) {
-		this.lyDoKeyWord = lyDoKeyWord;
-	}
 	public double getTongSoTien() {
 		return tongSoTien;
 	}
@@ -65,15 +57,11 @@ public class PhieuChi extends Model<PhieuChi> {
 	}
 
 	@Command
-	public void saveChiTien(@BindingParam("list") final Object listObject, @BindingParam("attr") final String attr, @BindingParam("wdn") final Window wdn) throws IOException {
-		lyDoKeyWord = "ly-do-" + Calendar.getInstance().getTimeInMillis();
+	public void savePhieuChi(@BindingParam("list") final Object listObject, @BindingParam("attr") final String attr, @BindingParam("wdn") final Window wdn) throws IOException {
 		save();
-		PhieuChi phieuChi = this.<PhieuChi>query().from(QPhieuChi.phieuChi).where(QPhieuChi.phieuChi.lyDoKeyWord.eq(lyDoKeyWord)).fetchFirst();
-		if(phieuChi != null) {
-			for (ChiTietPhieuChi chiTietPhieuChi : dataList) {
-				chiTietPhieuChi.setPhieuChi(phieuChi);
-				chiTietPhieuChi.doSave();
-			}
+		for (ChiTietPhieuChi chiTietPhieuChi : listItemCTPC) {
+			chiTietPhieuChi.setPhieuChi(this);
+			chiTietPhieuChi.doSave();
 		}
 		if (arrayRemoveItem.size() > 0) {
 			for (ChiTietPhieuChi chiTietPhieuChi : arrayRemoveItem) {
@@ -82,7 +70,7 @@ public class PhieuChi extends Model<PhieuChi> {
 		}
 		wdn.detach();
 		BindUtils.postNotifyChange(null, null, listObject, attr);
-		BindUtils.postNotifyChange(null, null, listObject, "dataList");
+		BindUtils.postNotifyChange(null, null, listObject, "listItemCTPC");
 	}
 
 	// add chitietphieuchi vao datalist khi click nut update
@@ -91,29 +79,29 @@ public class PhieuChi extends Model<PhieuChi> {
 		Map<String, Object> args = new HashMap<>();
 		args.put("vmArgs", vmArgs);
 		args.put("vm", vm);
-		dataList.clear();
+		listItemCTPC.clear();
 		PhieuChi phieuChi = (PhieuChi) vm;
 		List<ChiTietPhieuChi> chiTietPhieuChis = queryChiTietPhieuChi(phieuChi.getId()).fetch();
 		for (ChiTietPhieuChi chiTietPhieuChi2 : chiTietPhieuChis) {
-			dataList.add(chiTietPhieuChi2);
+			listItemCTPC.add(chiTietPhieuChi2);
 		}
 		Executions.createComponents(zul, null, args);
 	}
 	
 	
 	@SuppressWarnings("serial")
-	private List<ChiTietPhieuChi> dataList = new ArrayList<ChiTietPhieuChi>() {
+	private List<ChiTietPhieuChi> listItemCTPC = new ArrayList<ChiTietPhieuChi>() {
 		{
 			add(new ChiTietPhieuChi("tên khoản chi", 0));
 		}
 	};
 
 	@Transient
-	public List<ChiTietPhieuChi> getDataList() {
-		return dataList;
+	public List<ChiTietPhieuChi> getListItemCTPC() {
+		return listItemCTPC;
 	}
-	public void setDataList(List<ChiTietPhieuChi> dataList) {
-		this.dataList = dataList;
+	public void setListItemCTPC(List<ChiTietPhieuChi> listItemCTPC) {
+		this.listItemCTPC = listItemCTPC;
 	}
 	@Transient
 	public List<ChiTietPhieuChi> getArrayRemoveItem() {
@@ -124,11 +112,11 @@ public class PhieuChi extends Model<PhieuChi> {
 	}
 	
 	@Command
-	@NotifyChange({"dataList","arrayRemoveItem", "tongSoTien"})
-	public void removeItem(@BindingParam("list") final Object listObject, @BindingParam("item") Object item, @BindingParam("attr") final String attr) {
+	@NotifyChange({"listItemCTPC","arrayRemoveItem", "tongSoTien"})
+	public void removeItemCTPC(@BindingParam("list") final Object listObject, @BindingParam("item") Object item, @BindingParam("attr") final String attr) {
 		ChiTietPhieuChi chiTietPhieuChi = (ChiTietPhieuChi) item;
 		arrayRemoveItem.add(chiTietPhieuChi);
-		dataList.remove(item);
+		listItemCTPC.remove(item);
 		changeSoTien(listObject, attr);
 		BindUtils.postNotifyChange(null, null, listObject, attr);
 		BindUtils.postNotifyChange(null, null, listObject, "tongSoTien");
@@ -137,17 +125,17 @@ public class PhieuChi extends Model<PhieuChi> {
 	// thêm mới một item chi tiêu mới
 	@Command
 	public void addNewItemCTPC(@BindingParam("list") final Object listObject, @BindingParam("attr") final String attr) {
-		dataList.add(new ChiTietPhieuChi("tên khoản chi", 0));
+		listItemCTPC.add(new ChiTietPhieuChi("tên khoản chi", 0));
 		BindUtils.postNotifyChange(null, null, listObject, attr);
 	}
 	
 	
-	// gía trị tổng tiền tự động cập nhật khi thêm các item chi tiết chi
+	// ggia trị tổng tiền tự động cập nhật khi thêm các item chi tiết chi
 	@Command
 	@NotifyChange("tongSoTien")
 	public void changeSoTien(@BindingParam("list") final Object listObject, @BindingParam("attr") final String attr) {
 		tongSoTien = 0;
-		for (ChiTietPhieuChi chiTietPhieuChi : dataList) {
+		for (ChiTietPhieuChi chiTietPhieuChi : listItemCTPC) {
 			tongSoTien += chiTietPhieuChi.getSoTien();
 		}
 		BindUtils.postNotifyChange(null, null, listObject, attr);
@@ -158,7 +146,7 @@ public class PhieuChi extends Model<PhieuChi> {
 		return new AbstractValidator() {
 			@Override
 			public void validate(final ValidationContext ctx) {
-				for (ChiTietPhieuChi chiTietPhieuChi : dataList) {
+				for (ChiTietPhieuChi chiTietPhieuChi : listItemCTPC) {
 					if (chiTietPhieuChi.getTenMuc().equals("tên khoản chi") || chiTietPhieuChi.getSoTien() == 0) {
 						addInvalidMessage(ctx, "itemError", "Không được để giá trị mặc định");
 						return;

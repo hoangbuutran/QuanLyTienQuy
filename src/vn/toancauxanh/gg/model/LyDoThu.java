@@ -33,7 +33,7 @@ public class LyDoThu extends Model<LyDoThu> {
 	private String complete;
 	private boolean quy = true;
 
-	List<ThuTien> modelThuTien;
+	List<ThuTien> modelThuTien = new ArrayList<ThuTien>();
 
 	public LyDoThu() {
 		super();
@@ -152,7 +152,6 @@ public class LyDoThu extends Model<LyDoThu> {
 
 	@Command
 	public void showListNhanVien(@BindingParam("zul") String zul, @BindingParam("vmArgs") Object vmArgs, @BindingParam("item") LyDoThu lyDoThu) {
-		modelThuTien = new ArrayList<ThuTien>();
 		modelThuTien.addAll(getThuTienWithLyDo(lyDoThu.getId()));
 		redirectPage(zul, vmArgs, lyDoThu, null);
 	}

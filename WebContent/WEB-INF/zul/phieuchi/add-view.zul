@@ -2,7 +2,7 @@
 	border="normal" mode="modal" action="show: slideIn" closable="true"
 	title="${arg.save}" viewModel="@id('vm') @init(arg.model)"
 	validationMessages="@id('vmsgs')" class="col-lg-8 col-md-8 col-sm-8"
-	form="@id('fx') @load(vm) @save(vm, before={'saveChiTien'}) @validator(vm.validatorChiTien)"
+	form="@id('fx') @load(vm) @save(vm, before={'savePhieuChi'}) @validator(vm.validatorChiTien)"
 	onClose="@command('invokeGG', notify=vmArgs, detach=wdn, attr='targetQuery')">
 
 		<zscript>
@@ -22,7 +22,7 @@
 						</hlayout>
 						<vlayout>
 							<combobox placeholder="Chọn người chi quỹ" model="@load(nhanViens.nhanViensAndNull)" value="@load(vm.nguoiChi ne null ? vm.nguoiChi.hoVaTen : 'Chọn người chi')" 
-								selectedItem="@bind(vm.nguoiChi) @save(vm.nguoiChi, before={'saveChiTien'}) @validator('vn.toancauxanh.vm.BaseValid', constraint='no empty')" width="99%" readonly="true" disabled="${!(entry.quyen.phieuchi_sua)}">
+								selectedItem="@bind(vm.nguoiChi) @save(vm.nguoiChi, before={'savePhieuChi'}) @validator('vn.toancauxanh.vm.BaseValid', constraint='no empty')" width="99%" readonly="true">
 								<template name="model">
 								    <comboitem label="@load(each.hoVaTen)" ></comboitem>
 								 </template>
@@ -36,7 +36,7 @@
 							<x:label>Tổng số tiền<n:small class="required"> *</n:small></x:label>
 						</hlayout>
 						<vlayout>
-							<doublebox class="form-control" format=",###.# vnđ" width="100%" value="@bind(vm.tongSoTien) @save(vm.tongSoTien, before={'saveChiTien'}) @validator('vn.toancauxanh.vm.BaseValid', constraint='no empty')" readonly="true"></doublebox>
+							<doublebox class="form-control" format=",###.# vnđ" width="100%" value="@bind(vm.tongSoTien) @save(vm.tongSoTien, before={'savePhieuChi'}) @validator('vn.toancauxanh.vm.BaseValid', constraint='no empty')" readonly="true"></doublebox>
 							<label class="error" value="@load(vmsgs[self.previousSibling])"></label>
 						</vlayout>
 					</n:div>
@@ -45,36 +45,37 @@
 							<x:label>Lý do chi<n:small class="required"> *</n:small></x:label>
 						</hlayout>
 						<vlayout>
-							<textbox disabled="${!(entry.quyen.phieuchi_sua)}" class="form-control" width="100%" rows="4" value="@bind(vm.lyDo) @save(vm.lyDo, before={'saveChiTien'}) @validator('vn.toancauxanh.vm.BaseValid', constraint='no empty')"></textbox>
+							<textbox readonly="${!(entry.quyen.phieuchi_sua)}" class="form-control" width="100%" rows="4" value="@bind(vm.lyDo) @save(vm.lyDo, before={'savePhieuChi'}) @validator('vn.toancauxanh.vm.BaseValid', constraint='no empty')"></textbox>
 							<label class="error" value="@load(vmsgs[self.previousSibling])"></label>
 						</vlayout>
 					</n:div>
 				</n:div>
 				<n:div class="col-md-7 col-sm-12">
 	
-					
-					<grid model="@load(vm.dataList)" width="100%" id="grid" emptyMessage="Danh sách không có người nộp nào" class="hidden-xs">
+					<n:br></n:br>
+					<grid model="@load(vm.listItemCTPC)" width="100%" id="grid" emptyMessage="Danh sách không có người nộp nào" class="hidden-xs">
 						<columns>
 							<column label="STT" hflex="min" sclass="text-align-center"/>
-							<column label="Mục chi" width="58.5%" sclass="text-align-center"/>
+							<column label="Tên mục chi" width="58.5%" sclass="text-align-center"/>
 							<column label="Số tiền" width="25%" sclass="text-align-center"/>
 							<column label="Thao tác" width="16.5%" zk:if="${(vm.noId() and entry.quyen.phieuchi_them) or (!vm.noId() and entry.quyen.phieuchi_sua)}" sclass="text-align-center"/>
 						</columns>
 						<template name="model">
 							<row>
 								<label value="@bind(forEachStatus.index + 1 + vm.arg.page * vm.arg.pagesize)" style="text-align:center;display:block"/>
-								<textbox disabled="${!(entry.quyen.phieuchi_sua)}" value="@bind(each.tenMuc) @save(each.tenMuc, before={'saveChiTien'}) @validator('vn.toancauxanh.vm.BaseValid', constraint='no empty')" hflex="1" inplace="true" tooltiptext="click to edit"></textbox>
-								<doublebox disabled="${!(entry.quyen.phieuchi_sua)}" format=",###.#" value="@bind(each.soTien) @save(each.soTien, before={'saveChiTien'}) @validator('vn.toancauxanh.vm.BaseValid', constraint='no empty')"  style="text-align:center;display:block" hflex="1" onChange="@command('changeSoTien', list=vm, attr='tongSoTien')" instant="true" inplace="true" tooltiptext="click to edit"></doublebox>
+								<textbox readonly="${!(entry.quyen.phieuchi_sua)}" value="@bind(each.tenMuc) @save(each.tenMuc, before={'savePhieuChi'}) @validator('vn.toancauxanh.vm.BaseValid', constraint='no empty')" hflex="1" inplace="true" tooltiptext="click to edit"></textbox>
+								<doublebox readonly="${!(entry.quyen.phieuchi_sua)}" format=",###.#" value="@bind(each.soTien) @save(each.soTien, before={'savePhieuChi'}) @validator('vn.toancauxanh.vm.BaseValid', constraint='no empty')"  style="text-align:center;display:block" hflex="1" onChange="@command('changeSoTien', list=vm, attr='tongSoTien')" instant="true" inplace="true" tooltiptext="click to edit"></doublebox>
 								<n:div sclass="text-align-center" zk:if="${(vm.noId() and entry.quyen.phieuchi_them) or (!vm.noId() and entry.quyen.phieuchi_sua)}">
-									<x:a class="btn btn-default btn-xs" zk:if="${(!vm.noId() and vm.dataList.size() > 1) or (forEachStatus.index != 0)}"
-										onClick="@command('removeItem', list=vm, item=each, attr='dataList')"><n:i class="fa fa-times-circle" style="color: red;"></n:i>
+									<x:a class="btn btn-default btn-xs" zk:if="${(!vm.noId() and vm.listItemCTPC.size() > 1) or (forEachStatus.index != 0)}"
+										onClick="@command('removeItemCTPC', list=vm, item=each, attr='listItemCTPC')"><n:i class="fa fa-times-circle" style="color: red;"></n:i>
 									</x:a>
 								</n:div>
 							</row>
 						</template>
 					</grid>
-					<n:div class="box-tools pull-right margin-box" zk:if="${(vm.noId() and entry.quyen.phieuchi_them) or (!vm.noId() and entry.quyen.phieuchi_sua)}">
-						<x:button  class="btn btn-success" onClick="@command('addNewItemCTPC', list=vm, attr='dataList')">Add row</x:button>
+					<n:br></n:br>
+					<n:div class="box-tools margin-box" zk:if="${(vm.noId() and entry.quyen.phieuchi_them) or (!vm.noId() and entry.quyen.phieuchi_sua)}">
+						<x:button hflex="1" style="width: 100%;" class="btn btn-success" onClick="@command('addNewItemCTPC', list=vm, attr='listItemCTPC')">Thêm mới mục chi</x:button>
 					</n:div>
 					<label class="error" value="@load(vmsgs['itemError'])"></label>
 				</n:div>
@@ -82,7 +83,7 @@
 		</n:div>
 		
 		<n:div class="row box-footer">
-			<x:button zk:if="${(vm.noId() and entry.quyen.phieuchi_them) or (!vm.noId() and entry.quyen.phieuchi_sua)}" class="btn btn-success" id="btnSaveChiTien" onClick="@command('saveChiTien', list=vmArgs, attr='targetQuery', wdn=wdn)"><n:i class="fa fa-save"></n:i>&#160;Lưu</x:button><!-- onClick="@command('saveChiTien', list=vmArgs, attr='targetQuery', wdn=wdn)" -->
+			<x:button zk:if="${(vm.noId() and entry.quyen.phieuchi_them) or (!vm.noId() and entry.quyen.phieuchi_sua)}" class="btn btn-success" id="btnsavePhieuChi" onClick="@command('savePhieuChi', list=vmArgs, attr='targetQuery', wdn=wdn)"><n:i class="fa fa-save"></n:i>&#160;Lưu</x:button><!-- onClick="@command('savePhieuChi', list=vmArgs, attr='targetQuery', wdn=wdn)" -->
 			<x:button class="btn btn-default" onClick="@command('invokeGG', notify=vmArgs, detach=wdn, attr='targetQuery')"><n:i class="fa fa-times-circle"></n:i>&#160;Hủy</x:button>
 		</n:div>
 		

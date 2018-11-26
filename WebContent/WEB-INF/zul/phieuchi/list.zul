@@ -86,6 +86,7 @@
 										<columns>
 											<column label="STT" hflex="min" sclass="text-align-center"/>
 											<column label="Người chi" width="25%" />
+											<column label="Lý do chi" width="25%" />
 											<column label="Ngày chi" width="100px" sclass="text-align-center"/>
 											<column label="Tổng số tiền" width="80px" sclass="text-align-center"/>
 											<column label="Trạng thái" width="80px" sclass="text-align-center"/>
@@ -95,6 +96,7 @@
 											<row apply="org.zkoss.bind.BindComposer" viewModel="@id('item') @init(each)">
 												<label value="@bind(forEachStatus.index + 1 + vm.arg.page * vm.arg.pagesize)" style="text-align:center;display:block"/>
 												<label value="@load(each.nguoiChi.hoVaTen)" />
+												<label value="@load(each.lyDo)" />
 												<label value="@load(each.ngayTao) @converter('formattedDate', format='dd/MM/yyyy')" style="text-align:center;display:block"/>
 												<label value="@load(c:formatNumber(each.tongSoTien, '#,###.## vnđ'))" style="text-align:center;display:block"/>
 												<cell sclass="text-align-center">
