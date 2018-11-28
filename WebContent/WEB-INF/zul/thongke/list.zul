@@ -33,7 +33,7 @@
 											value="@load(each.value eq null ? 'Tất cả' : each.value)"
 											selectedItem="@bind(vm.arg.thang)" width="99%">
 											<template name="model">
-											    <comboitem value="@load(each.key)" label="@load(each.value eq '      ' ? 'Tất cả' : each.value)" />
+											    <comboitem value="@load(each.key)" label="@load(each.value eq '' ? 'Tất cả' : each.value)" />
 											 </template>
 										</combobox>
 									</div>
@@ -46,7 +46,7 @@
 											value="@load(each.value eq null ? 'Tất cả' : each.value)"
 											selectedItem="@bind(vm.arg.nam)" width="99%">
 											<template name="model">
-											    <comboitem value="@load(each.key)" label="@load(each.value eq '      ' ? 'Tất cả' : each.value)" />
+											    <comboitem value="@load(each.key)" label="@load(each.value eq '' ? 'Tất cả' : each.value)" />
 											 </template>
 										</combobox>
 									</div>
@@ -56,6 +56,9 @@
 			   						<n:div class="form-group text-center">
 			   							<x:button class="btn btn-warning" type="button" onClick="@command('cmd', notify=vm, attr='*')" >
 											<n:i class="fa fa-search"></n:i> Thống kê
+										</x:button>
+										<x:button class="btn btn-warning" type="button" onClick="@command('exportExcelThuChi')" >
+											Export Excel
 										</x:button>
 			   						</n:div>
 			   					</n:div>
@@ -68,6 +71,7 @@
     			<n:div class="box box-success">
     				<n:div class="box-header">
 	    				<n:h3 class="box-title"></n:h3>
+	    				
 	    				<n:div class="box-tools pull-right">
 	    					<n:button type="button" class="btn btn-box-tool" data-widget="collapse"><n:i class="fa fa-minus"></n:i></n:button>
 	    				</n:div>

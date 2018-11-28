@@ -528,15 +528,15 @@ public class ExcelUtil {
 		c.setCellStyle(setBorderAndFont(wb, 1, true, 14, "BLUE", "CENTER"));
 		c = row.createCell(3);
 		c.setCellStyle(setBorderAndFont(wb, 1, true, 14, "BLUE", "CENTER"));
-		c = row.createCell(4);
-		c.setCellStyle(setBorderAndFont(wb, 1, true, 14, "BLUE", "CENTER"));
+		/*c = row.createCell(4);
+		c.setCellStyle(setBorderAndFont(wb, 1, true, 14, "BLUE", "CENTER"));*/
 		sheet1.addMergedRegion(new CellRangeAddress(0, 0, 0, 4));
 		// set column width
 		sheet1.setColumnWidth(0, 7 * 256);
 		sheet1.setColumnWidth(1, 30 * 256);
 		sheet1.setColumnWidth(2, 30 * 256);
 		sheet1.setColumnWidth(3, 16 * 256);
-		sheet1.setColumnWidth(4, 16 * 256);
+		/*sheet1.setColumnWidth(4, 16 * 256);*/
 		// Generate rows header of grid
 		idx++;
 		row = sheet1.createRow(idx);
@@ -552,9 +552,9 @@ public class ExcelUtil {
 		c = row.createCell(3);
 		c.setCellValue("Thời hạn báo cáo");
 		c.setCellStyle(setBorderAndFont(wb, 1, true, 11, "","CENTER"));		
-		c = row.createCell(4);
+		/*c = row.createCell(4);
 		c.setCellValue("Tình trạng xử lý");
-		c.setCellStyle(setBorderAndFont(wb, 1, true, 11, "","CENTER"));		
+		c.setCellStyle(setBorderAndFont(wb, 1, true, 11, "","CENTER"));	*/	
 		
 		idx++;
 		CellStyle cellStyleLeft = setBorderAndFont(wb, 1, false, 11, "","LEFT");
@@ -573,9 +573,283 @@ public class ExcelUtil {
 			c = row.createCell(3);
 			c.setCellValue(ob[3] + "");
 			c.setCellStyle(cellStyleCenter);	
-			c = row.createCell(4);
+			/*c = row.createCell(4);
 			c.setCellValue(ob[4] + "");
-			c.setCellStyle(cellStyleCenter);
+			c.setCellStyle(cellStyleCenter);*/
+			idx++;
+		}
+		
+		ByteArrayOutputStream fileOut = new ByteArrayOutputStream();
+		wb.write(fileOut);
+		Filedownload.save(new ByteArrayInputStream(fileOut.toByteArray()),"application/octet-stream", fileName + ".xlsx");
+		} finally {
+			wb.close();
+		}
+	}
+	
+	public static void exportPhieuChi(String title, String fileName, 
+			String sheetname, List<Object[]> list) throws IOException {
+		// New Workbook
+		Workbook wb = new XSSFWorkbook();
+		try {
+		Cell c = null;
+		// New Sheet
+		Sheet sheet1 = null;
+		sheet1 = wb.createSheet(sheetname);
+		// Row and column indexes
+		int idx = 0;
+		// Generate column headings
+		Row row;
+		row = sheet1.createRow(idx);
+		c = row.createCell(0);
+		c.setCellValue(title);
+		c.setCellStyle(setBorderAndFont(wb, 1, true, 14, "BLUE", "CENTER"));
+		c = row.createCell(1);
+		c.setCellStyle(setBorderAndFont(wb, 1, true, 14, "BLUE", "CENTER"));
+		c = row.createCell(2);
+		c.setCellStyle(setBorderAndFont(wb, 1, true, 14, "BLUE", "CENTER"));
+		c = row.createCell(3);
+		c.setCellStyle(setBorderAndFont(wb, 1, true, 14, "BLUE", "CENTER"));
+		sheet1.addMergedRegion(new CellRangeAddress(0, 0, 0, 4));
+		// set column width
+		sheet1.setColumnWidth(0, 7 * 256);
+		sheet1.setColumnWidth(1, 30 * 256);
+		sheet1.setColumnWidth(2, 50 * 256);
+		sheet1.setColumnWidth(3, 30 * 256);
+		sheet1.setColumnWidth(4, 16 * 256);
+		// Generate rows header of grid
+		idx++;
+		row = sheet1.createRow(idx);
+		c = row.createCell(0);
+		c.setCellValue("STT");
+		c.setCellStyle(setBorderAndFont(wb, 1, true, 11, "","CENTER"));	
+		c = row.createCell(1);
+		c.setCellValue("Người chi");
+		c.setCellStyle(setBorderAndFont(wb, 1, true, 11, "","CENTER"));		
+		c = row.createCell(2);
+		c.setCellValue("Lý do chi");
+		c.setCellStyle(setBorderAndFont(wb, 1, true, 11, "","CENTER"));		
+		c = row.createCell(3);
+		c.setCellValue("Ngày chi");
+		c.setCellStyle(setBorderAndFont(wb, 1, true, 11, "","CENTER"));		
+		c = row.createCell(4);
+		c.setCellValue("Tổng tiền chi");
+		c.setCellStyle(setBorderAndFont(wb, 1, true, 11, "","CENTER"));
+		
+		idx++;
+		CellStyle cellStyleLeft = setBorderAndFont(wb, 1, false, 11, "","LEFT");
+		CellStyle cellStyleCenter = setBorderAndFont(wb, 1, false, 11, "","CENTER");
+		int size_list = list.size();
+		for (Object[] ob: list) {
+			
+			if ((idx - 1) == size_list) {
+				row = sheet1.createRow(idx);
+				
+				sheet1.addMergedRegion(new CellRangeAddress(idx, idx, 0, 3));
+				
+				c = row.createCell(0);			
+				c.setCellValue("Tổng tiền chi:");
+				c.setCellStyle(cellStyleCenter);				
+				c = row.createCell(1);
+				c.setCellValue(ob[1] + "");
+				c.setCellStyle(cellStyleLeft);				
+				c = row.createCell(2);
+				c.setCellValue(ob[2] + "");
+				c.setCellStyle(cellStyleLeft);		
+				c = row.createCell(3);
+				c.setCellValue(ob[3] + "");
+				c.setCellStyle(cellStyleCenter);	
+				c = row.createCell(4);
+				c.setCellValue(ob[4] + "");
+				c.setCellStyle(cellStyleCenter);
+
+			} else {
+
+				row = sheet1.createRow(idx);
+				c = row.createCell(0);			
+				c.setCellValue(ob[0] + "");
+				c.setCellStyle(cellStyleCenter);				
+				c = row.createCell(1);
+				c.setCellValue(ob[1] + "");
+				c.setCellStyle(cellStyleLeft);				
+				c = row.createCell(2);
+				c.setCellValue(ob[2] + "");
+				c.setCellStyle(cellStyleLeft);		
+				c = row.createCell(3);
+				c.setCellValue(ob[3] + "");
+				c.setCellStyle(cellStyleCenter);	
+				c = row.createCell(4);
+				c.setCellValue(ob[4] + "");
+				c.setCellStyle(cellStyleCenter);
+			}
+			
+			idx++;
+		}
+		
+		ByteArrayOutputStream fileOut = new ByteArrayOutputStream();
+		wb.write(fileOut);
+		Filedownload.save(new ByteArrayInputStream(fileOut.toByteArray()),"application/octet-stream", fileName + ".xlsx");
+		} finally {
+			wb.close();
+		}
+	}
+	public static void exportThuKhac(String title, String fileName, 
+			String sheetname, List<Object[]> list) throws IOException {
+		// New Workbook
+		Workbook wb = new XSSFWorkbook();
+		try {
+		Cell c = null;
+		// New Sheet
+		Sheet sheet1 = null;
+		sheet1 = wb.createSheet(sheetname);
+		// Row and column indexes
+		int idx = 0;
+		// Generate column headings
+		Row row;
+		row = sheet1.createRow(idx);
+		c = row.createCell(0);
+		c.setCellValue(title);
+		c.setCellStyle(setBorderAndFont(wb, 1, true, 14, "BLUE", "CENTER"));
+		c = row.createCell(1);
+		c.setCellStyle(setBorderAndFont(wb, 1, true, 14, "BLUE", "CENTER"));
+		c = row.createCell(2);
+		c.setCellStyle(setBorderAndFont(wb, 1, true, 14, "BLUE", "CENTER"));
+		sheet1.addMergedRegion(new CellRangeAddress(0, 0, 0, 3));
+		// set column width
+		sheet1.setColumnWidth(0, 7 * 256);
+		sheet1.setColumnWidth(1, 50 * 256);
+		sheet1.setColumnWidth(2, 30 * 256);
+		sheet1.setColumnWidth(3, 30 * 256);
+		// Generate rows header of grid
+		idx++;
+		row = sheet1.createRow(idx);
+		c = row.createCell(0);
+		c.setCellValue("STT");
+		c.setCellStyle(setBorderAndFont(wb, 1, true, 11, "","CENTER"));	
+		c = row.createCell(1);
+		c.setCellValue("Lý do thu");
+		c.setCellStyle(setBorderAndFont(wb, 1, true, 11, "","CENTER"));		
+		c = row.createCell(2);
+		c.setCellValue("Ngày thu");
+		c.setCellStyle(setBorderAndFont(wb, 1, true, 11, "","CENTER"));		
+		c = row.createCell(3);
+		c.setCellValue("Số tiền");
+		c.setCellStyle(setBorderAndFont(wb, 1, true, 11, "","CENTER"));		
+		
+		idx++;
+		CellStyle cellStyleLeft = setBorderAndFont(wb, 1, false, 11, "","LEFT");
+		CellStyle cellStyleCenter = setBorderAndFont(wb, 1, false, 11, "","CENTER");
+		
+		int size_list = list.size();
+
+		for (Object[] ob: list) {
+
+			if ((idx - 1) == size_list) {
+				row = sheet1.createRow(idx);
+				sheet1.addMergedRegion(new CellRangeAddress(idx, idx, 0, 2));
+				c = row.createCell(0);			
+				c.setCellValue("Tổng tiền thu");
+				c.setCellStyle(cellStyleCenter);				
+				c = row.createCell(1);
+				c.setCellValue(ob[1] + "");
+				c.setCellStyle(cellStyleLeft);				
+				c = row.createCell(2);
+				c.setCellValue(ob[2] + "");
+				c.setCellStyle(cellStyleLeft);		
+				c = row.createCell(3);
+				c.setCellValue(ob[3] + "");
+				c.setCellStyle(cellStyleCenter);	
+			}else {				
+				row = sheet1.createRow(idx);
+				c = row.createCell(0);			
+				c.setCellValue(ob[0] + "");
+				c.setCellStyle(cellStyleCenter);				
+				c = row.createCell(1);
+				c.setCellValue(ob[1] + "");
+				c.setCellStyle(cellStyleLeft);				
+				c = row.createCell(2);
+				c.setCellValue(ob[2] + "");
+				c.setCellStyle(cellStyleLeft);		
+				c = row.createCell(3);
+				c.setCellValue(ob[3] + "");
+				c.setCellStyle(cellStyleCenter);	
+			}
+			idx++;
+		}
+
+		ByteArrayOutputStream fileOut = new ByteArrayOutputStream();
+		wb.write(fileOut);
+		Filedownload.save(new ByteArrayInputStream(fileOut.toByteArray()),"application/octet-stream", fileName + ".xlsx");
+		} finally {
+			wb.close();
+		}
+	}
+	
+	public static void exportThuChi(String title, String fileName, 
+			String sheetname, List<Object[]> list) throws IOException {
+		// New Workbook
+		Workbook wb = new XSSFWorkbook();
+		try {
+		Cell c = null;
+		// New Sheet
+		Sheet sheet1 = null;
+		sheet1 = wb.createSheet(sheetname);
+		// Row and column indexes
+		int idx = 0;
+		// Generate column headings
+		Row row;
+		row = sheet1.createRow(idx);
+		c = row.createCell(0);
+		c.setCellValue(title);
+		c.setCellStyle(setBorderAndFont(wb, 1, true, 14, "BLUE", "CENTER"));
+		c = row.createCell(1);
+		c.setCellStyle(setBorderAndFont(wb, 1, true, 14, "BLUE", "CENTER"));
+		c = row.createCell(2);
+		c.setCellStyle(setBorderAndFont(wb, 1, true, 14, "BLUE", "CENTER"));
+		c = row.createCell(3);
+		c.setCellStyle(setBorderAndFont(wb, 1, true, 14, "BLUE", "CENTER"));
+		sheet1.addMergedRegion(new CellRangeAddress(0, 0, 0, 3));
+		// set column width
+		sheet1.setColumnWidth(0, 30 * 256);
+		sheet1.setColumnWidth(1, 30 * 256);
+		sheet1.setColumnWidth(2, 30 * 256);
+		sheet1.setColumnWidth(3, 30 * 256);
+		// Generate rows header of grid
+		idx++;
+		row = sheet1.createRow(idx);
+		c = row.createCell(0);
+		c.setCellValue("Tháng");
+		c.setCellStyle(setBorderAndFont(wb, 1, true, 11, "","CENTER"));	
+		c = row.createCell(1);
+		c.setCellValue("Tổng thu tháng");
+		c.setCellStyle(setBorderAndFont(wb, 1, true, 11, "","CENTER"));		
+		c = row.createCell(2);
+		c.setCellValue("Tổng chi tháng");
+		c.setCellStyle(setBorderAndFont(wb, 1, true, 11, "","CENTER"));		
+		c = row.createCell(3);
+		c.setCellValue("Tổng dư");
+		c.setCellStyle(setBorderAndFont(wb, 1, true, 11, "","CENTER"));
+		
+		idx++;
+		CellStyle cellStyleLeft = setBorderAndFont(wb, 1, false, 11, "","LEFT");
+		CellStyle cellStyleCenter = setBorderAndFont(wb, 1, false, 11, "","CENTER");
+
+		for (Object[] ob: list) {
+
+			row = sheet1.createRow(idx);
+			c = row.createCell(0);			
+			c.setCellValue(ob[0] + "");
+			c.setCellStyle(cellStyleCenter);				
+			c = row.createCell(1);
+			c.setCellValue(ob[1] + "");
+			c.setCellStyle(cellStyleLeft);				
+			c = row.createCell(2);
+			c.setCellValue(ob[2] + "");
+			c.setCellStyle(cellStyleLeft);
+			c = row.createCell(3);
+			c.setCellValue(ob[3] + "");
+			c.setCellStyle(cellStyleLeft);
+			
 			idx++;
 		}
 		

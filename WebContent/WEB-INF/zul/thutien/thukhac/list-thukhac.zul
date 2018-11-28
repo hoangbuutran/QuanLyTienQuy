@@ -70,6 +70,9 @@
 						<n:div class="box-header">
 							<n:h3 class="box-title">Danh sách tiền thu</n:h3>
 							<n:div class="box-tools pull-right">
+								<x:button class="btn btn-warning" type="button" onClick="@command('exportExcelThuKhac')" >
+									Export Excel
+								</x:button>
 								<x:button zk:if="${entry.quyen.thutien_them}" class="btn btn-success" onClick="@command('redirectPage', zul='thutien/thukhac/add.zul', vmArgs=vm, vm=null)">
 									<n:i class="fa fa-plus"></n:i>&#160;Thêm mới
 								</x:button>

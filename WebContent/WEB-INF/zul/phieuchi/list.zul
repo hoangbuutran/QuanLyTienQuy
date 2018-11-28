@@ -70,7 +70,9 @@
 					<n:div class="box-header">
 						<n:h3 class="box-title">Danh sách phiếu chi</n:h3>
 						<n:div class="box-tools pull-right">
-						
+							<x:button class="btn btn-warning" type="button" onClick="@command('exportExcel')" >
+								Export Excel
+							</x:button>
 							<x:button zk:if="${entry.quyen.phieuchi_them}"  class="btn btn-success" onClick="@command('redirectPage', zul='phieuchi/add.zul', vmArgs=vm, vm=null)">
 								<n:i class="fa fa-plus"></n:i>&#160;Thêm mới
 							</x:button>

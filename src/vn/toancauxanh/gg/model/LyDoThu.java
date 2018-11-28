@@ -89,7 +89,10 @@ public class LyDoThu extends Model<LyDoThu> {
 		setQuy(true);
 		setComplete(core().TT_THU_CHUA_HOAN_THANH);
 		save();
-		List<NhanVien> nhanViens = queryNhanVien().fetch();
+		
+		List<NhanVien> nhanViens = new ArrayList<>();
+		nhanViens.addAll(queryListNhanVien());
+		
 		for (NhanVien nhanVien : nhanViens) {
 			ThuTien thuTien = new ThuTien(this, nhanVien, false);
 			thuTien.save();
@@ -98,7 +101,10 @@ public class LyDoThu extends Model<LyDoThu> {
 	
 	// gửi mail thông báo cho toàn bộ nhân viên trong team java biết.
 	public void sendEmailNotiForAllStaff(String title, String content) {
-		List<NhanVien> nhanViens = queryNhanVien().fetch();
+		
+		List<NhanVien> nhanViens = new ArrayList<>();
+		nhanViens.addAll(queryListNhanVien());
+		
 		for (NhanVien nhanVien : nhanViens) {
 			SendEmail.sendEmailGmail(nhanVien.getEmail(), title, content);
 		}
@@ -133,12 +139,14 @@ public class LyDoThu extends Model<LyDoThu> {
 	public void saveNhanVienAndQuy(@BindingParam("list") final Object listObject, @BindingParam("attr") final String attr, @BindingParam("wdn") final Window wdn) throws IOException {
 		int totalNhanVien = modelThuTien.size();
 		int totalDaNop = 0;
+		
 		for (ThuTien thuTien : modelThuTien) {
 			if (thuTien.isXacNhan()) {
 				totalDaNop ++;
 			}
 			thuTien.save();
 		}
+		// set thuộc tính complete đã hoàn thành hay không.
 		if (totalNhanVien == totalDaNop) {
 			setComplete(core().TT_THU_DA_HOAN_THANH);
 			this.save();
@@ -150,6 +158,7 @@ public class LyDoThu extends Model<LyDoThu> {
 		BindUtils.postNotifyChange(null, null, listObject, attr);
 	}
 
+	// hàm hiển thị danh sách nhân viên trong đợt quỹ đó
 	@Command
 	public void showListNhanVien(@BindingParam("zul") String zul, @BindingParam("vmArgs") Object vmArgs, @BindingParam("item") LyDoThu lyDoThu) {
 		modelThuTien.addAll(getThuTienWithLyDo(lyDoThu.getId()));
@@ -158,11 +167,13 @@ public class LyDoThu extends Model<LyDoThu> {
 	
 	@Command
 	public void sendMailNhacNopQuy(@BindingParam("item") ThuTien thuTien) {
+		// kiểm tra tài khoản có email hay không
 		if (thuTien.getNguoiNop().getEmail() == null || thuTien.getNguoiNop().getEmail().isEmpty()) {
 			showNotification("Nhân viên chưa cập nhật Email !", "", "warning");
 			return;
 		}
-		SendEmail.sendEmailGmail(thuTien.getNguoiNop().getEmail(), "Email notification from Team java", "Đề nghị <h2> "+ thuTien.getNguoiNop().getHoVaTen() +"</h2> nộp tiền trong đợt <h2>\"" + thuTien.getLyDoThu().lyDoContent + "\"</h2>");
+		// gửi mail nhắc nhở nộp tiền
+		SendEmail.sendEmailGmail(thuTien.getNguoiNop().getEmail(), "Email notification from Team java", "<h2>Đề nghị "+ thuTien.getNguoiNop().getHoVaTen() +" nộp tiền trong đợt " + thuTien.getLyDoThu().lyDoContent + "</h2>");
 		showNotification("Mail đã được gửi!", "", "success");
 	}
 
@@ -185,14 +196,11 @@ public class LyDoThu extends Model<LyDoThu> {
 
 
 	public List<ThuTien> getThuTienWithLyDo(long id) {
-		List<ThuTien> thuTiens = new ArrayList<ThuTien>();
-		thuTiens = find(ThuTien.class).where(QThuTien.thuTien.trangThai.ne(core().TT_DA_XOA))
-				.where(QThuTien.thuTien.lyDoThu.id.eq(id)).fetch();
-		return thuTiens;
+		return core().getThuTiens().getThuTienWithLyDo(id).fetch();
 	}
 
-	public JPAQuery<NhanVien> queryNhanVien() {
-		return find(NhanVien.class).where(QNhanVien.nhanVien.trangThai.ne(core().TT_DA_XOA));
+	public List<NhanVien> queryListNhanVien() {
+		return core().getNhanViens().getTargetQueryNhanVien().fetch();
 	}
 	
 	public void setModelThuTien(List<ThuTien> modelThuTien) {

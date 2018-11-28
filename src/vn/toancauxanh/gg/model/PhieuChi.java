@@ -20,11 +20,8 @@ import org.zkoss.bind.validator.AbstractValidator;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zul.Window;
 
-import com.querydsl.jpa.impl.JPAQuery;
-
 import vn.toancauxanh.model.Model;
 import vn.toancauxanh.model.NhanVien;
-import vn.toancauxanh.model.QNhanVien;
 import vn.toancauxanh.service.SendEmail;
 
 @Entity
@@ -59,15 +56,18 @@ public class PhieuChi extends Model<PhieuChi> {
 	@Command
 	public void savePhieuChi(@BindingParam("list") final Object listObject, @BindingParam("attr") final String attr, @BindingParam("wdn") final Window wdn) throws IOException {
 		save();
+		
 		for (ChiTietPhieuChi chiTietPhieuChi : listItemCTPC) {
 			chiTietPhieuChi.setPhieuChi(this);
 			chiTietPhieuChi.doSave();
 		}
+		
 		if (arrayRemoveItem.size() > 0) {
 			for (ChiTietPhieuChi chiTietPhieuChi : arrayRemoveItem) {
 				chiTietPhieuChi.deleteTrangThaiConfirmAndNoNotify(listObject, attr);
 			}
 		}
+		
 		wdn.detach();
 		BindUtils.postNotifyChange(null, null, listObject, attr);
 		BindUtils.postNotifyChange(null, null, listObject, "listItemCTPC");
@@ -77,39 +77,23 @@ public class PhieuChi extends Model<PhieuChi> {
 	@Command
 	public void editPhieuChi(@BindingParam("zul") String zul, @BindingParam("vmArgs") Object vmArgs, @BindingParam("vm") Object vm){
 		Map<String, Object> args = new HashMap<>();
+		List<ChiTietPhieuChi> chiTietPhieuChis = new ArrayList<>();
+
 		args.put("vmArgs", vmArgs);
 		args.put("vm", vm);
 		listItemCTPC.clear();
 		PhieuChi phieuChi = (PhieuChi) vm;
-		List<ChiTietPhieuChi> chiTietPhieuChis = queryChiTietPhieuChi(phieuChi.getId()).fetch();
+		
+		chiTietPhieuChis.addAll(queryListChiTietPhieuChi(phieuChi.getId()));
+		
 		for (ChiTietPhieuChi chiTietPhieuChi2 : chiTietPhieuChis) {
 			listItemCTPC.add(chiTietPhieuChi2);
 		}
+		
 		Executions.createComponents(zul, null, args);
 	}
 	
 	
-	@SuppressWarnings("serial")
-	private List<ChiTietPhieuChi> listItemCTPC = new ArrayList<ChiTietPhieuChi>() {
-		{
-			add(new ChiTietPhieuChi("tên khoản chi", 0));
-		}
-	};
-
-	@Transient
-	public List<ChiTietPhieuChi> getListItemCTPC() {
-		return listItemCTPC;
-	}
-	public void setListItemCTPC(List<ChiTietPhieuChi> listItemCTPC) {
-		this.listItemCTPC = listItemCTPC;
-	}
-	@Transient
-	public List<ChiTietPhieuChi> getArrayRemoveItem() {
-		return arrayRemoveItem;
-	}
-	public void setArrayRemoveItem(List<ChiTietPhieuChi> arrayRemoveItem) {
-		this.arrayRemoveItem = arrayRemoveItem;
-	}
 	
 	@Command
 	@NotifyChange({"listItemCTPC","arrayRemoveItem", "tongSoTien"})
@@ -135,6 +119,7 @@ public class PhieuChi extends Model<PhieuChi> {
 	@NotifyChange("tongSoTien")
 	public void changeSoTien(@BindingParam("list") final Object listObject, @BindingParam("attr") final String attr) {
 		tongSoTien = 0;
+		
 		for (ChiTietPhieuChi chiTietPhieuChi : listItemCTPC) {
 			tongSoTien += chiTietPhieuChi.getSoTien();
 		}
@@ -156,19 +141,47 @@ public class PhieuChi extends Model<PhieuChi> {
 		};
 	}
 	
-	public JPAQuery<ChiTietPhieuChi> queryChiTietPhieuChi(long id) {
-		return find(ChiTietPhieuChi.class).where(QChiTietPhieuChi.chiTietPhieuChi.trangThai.ne(core().TT_DA_XOA))
-				.where(QChiTietPhieuChi.chiTietPhieuChi.phieuChi.id.eq(id));
-	}
+	
 	
 	// gửi mail thông báo cho toàn bộ nhân viên trong team java biết.
 	public void sendEmailNotiForAllStaff(String title, String content) {
-		List<NhanVien> nhanViens = queryNhanVien().fetch();
+		
+		List<NhanVien> nhanViens = new ArrayList<>(); 
+		nhanViens.addAll(queryListNhanVien());
+		
 		for (NhanVien nhanVien : nhanViens) {
-			SendEmail.sendEmailGmail(nhanVien.getEmail(), title, content);
+			if (nhanVien.getEmail() != null || !nhanVien.getEmail().isEmpty()) {				
+				SendEmail.sendEmailGmail(nhanVien.getEmail(), title, content);
+			}
 		}
 	}
-	public JPAQuery<NhanVien> queryNhanVien() {
-		return find(NhanVien.class).where(QNhanVien.nhanVien.trangThai.ne(core().TT_DA_XOA));
+
+	public List<NhanVien> queryListNhanVien() {
+		return core().getNhanViens().getTargetQueryNhanVien().fetch();
+	}
+	public List<ChiTietPhieuChi> queryListChiTietPhieuChi(long id) {
+		return core().getChiTietPhieuChis().queryListChiTietPhieuChi(id).fetch();
+	}
+	
+	@SuppressWarnings("serial")
+	private List<ChiTietPhieuChi> listItemCTPC = new ArrayList<ChiTietPhieuChi>() {
+		{
+			add(new ChiTietPhieuChi("tên khoản chi", 0));
+		}
+	};
+
+	@Transient
+	public List<ChiTietPhieuChi> getListItemCTPC() {
+		return listItemCTPC;
+	}
+	public void setListItemCTPC(List<ChiTietPhieuChi> listItemCTPC) {
+		this.listItemCTPC = listItemCTPC;
+	}
+	@Transient
+	public List<ChiTietPhieuChi> getArrayRemoveItem() {
+		return arrayRemoveItem;
+	}
+	public void setArrayRemoveItem(List<ChiTietPhieuChi> arrayRemoveItem) {
+		this.arrayRemoveItem = arrayRemoveItem;
 	}
 }

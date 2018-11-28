@@ -17,4 +17,9 @@ public class ThuTienService extends BasicService<ThuTien> {
 		return q;
 	}
 
+	public JPAQuery<ThuTien> getThuTienWithLyDo(long id) {
+		return find(ThuTien.class)
+				.where(QThuTien.thuTien.trangThai.ne(core().TT_DA_XOA))
+				.where(QThuTien.thuTien.lyDoThu.id.eq(id));
+	}
 }
