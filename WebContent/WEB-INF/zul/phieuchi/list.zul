@@ -87,12 +87,12 @@
     								<grid model="@load(vm.page(vm.targetQuery).fetch())" width="100%" id="grid" emptyMessage="Danh sách không có người nộp nào" class="hidden-xs">
 										<columns>
 											<column label="STT" hflex="min" sclass="text-align-center"/>
-											<column label="Người chi" width="25%" />
-											<column label="Lý do chi" width="25%" />
-											<column label="Ngày chi" width="100px" sclass="text-align-center"/>
-											<column label="Tổng số tiền" width="80px" sclass="text-align-center"/>
-											<column label="Trạng thái" width="80px" sclass="text-align-center"/>
-											<column label="Thao tác" width="80px" sclass="text-align-center"/>
+											<column label="Người chi" width="35%" />
+											<column label="Lý do chi" width="35%" />
+											<column label="Ngày chi" hflex="min" sclass="text-align-center"/>
+											<column label="Tổng số tiền" hflex="min" sclass="text-align-center"/>
+											<column label="Trạng thái" hflex="min" sclass="text-align-center"/>
+											<column label="Thao tác" hflex="min" sclass="text-align-center"/>
 										</columns>
 										<template name="model">
 											<row apply="org.zkoss.bind.BindComposer" viewModel="@id('item') @init(each)">

@@ -16,7 +16,6 @@ import javax.imageio.stream.FileImageOutputStream;
 
 import org.zkoss.image.AImage;
 import org.zkoss.util.media.Media;
-import org.zkoss.zk.ui.WebApps;
 
 import com.liferay.portal.model.Image;
 

@@ -28,40 +28,19 @@ import vn.toancauxanh.service.SendEmail;
 @Table(name = "phieuchi")
 public class PhieuChi extends Model<PhieuChi> {
 
-	private double tongSoTien;
 	private String lyDo;
 	private NhanVien nguoiChi;
-	private List<ChiTietPhieuChi> arrayRemoveItem = new ArrayList<ChiTietPhieuChi>();
+	private double tongSoTien;
 	
-	public double getTongSoTien() {
-		return tongSoTien;
-	}
-	public void setTongSoTien(double tongSoTien) {
-		this.tongSoTien = tongSoTien;
-	}
-	public String getLyDo() {
-		return lyDo;
-	}
-	public void setLyDo(String lyDo) {
-		this.lyDo = lyDo;
-	}
-	@ManyToOne
-	public NhanVien getNguoiChi() {
-		return nguoiChi;
-	}
-	public void setNguoiChi(NhanVien nguoiChi) {
-		this.nguoiChi = nguoiChi;
-	}
+	private List<ChiTietPhieuChi> arrayRemoveItem = new ArrayList<ChiTietPhieuChi>();
 
 	@Command
 	public void savePhieuChi(@BindingParam("list") final Object listObject, @BindingParam("attr") final String attr, @BindingParam("wdn") final Window wdn) throws IOException {
 		save();
-		
 		for (ChiTietPhieuChi chiTietPhieuChi : listItemCTPC) {
 			chiTietPhieuChi.setPhieuChi(this);
 			chiTietPhieuChi.doSave();
 		}
-		
 		if (arrayRemoveItem.size() > 0) {
 			for (ChiTietPhieuChi chiTietPhieuChi : arrayRemoveItem) {
 				chiTietPhieuChi.deleteTrangThaiConfirmAndNoNotify(listObject, attr);
@@ -76,24 +55,21 @@ public class PhieuChi extends Model<PhieuChi> {
 	// add chitietphieuchi vao datalist khi click nut update
 	@Command
 	public void editPhieuChi(@BindingParam("zul") String zul, @BindingParam("vmArgs") Object vmArgs, @BindingParam("vm") Object vm){
+		
 		Map<String, Object> args = new HashMap<>();
 		List<ChiTietPhieuChi> chiTietPhieuChis = new ArrayList<>();
-
-		args.put("vmArgs", vmArgs);
 		args.put("vm", vm);
+		args.put("vmArgs", vmArgs);
 		listItemCTPC.clear();
-		PhieuChi phieuChi = (PhieuChi) vm;
 		
+		PhieuChi phieuChi = (PhieuChi) vm;
 		chiTietPhieuChis.addAll(queryListChiTietPhieuChi(phieuChi.getId()));
 		
 		for (ChiTietPhieuChi chiTietPhieuChi2 : chiTietPhieuChis) {
 			listItemCTPC.add(chiTietPhieuChi2);
 		}
-		
 		Executions.createComponents(zul, null, args);
 	}
-	
-	
 	
 	@Command
 	@NotifyChange({"listItemCTPC","arrayRemoveItem", "tongSoTien"})
@@ -140,9 +116,7 @@ public class PhieuChi extends Model<PhieuChi> {
 			}
 		};
 	}
-	
-	
-	
+
 	// gửi mail thông báo cho toàn bộ nhân viên trong team java biết.
 	public void sendEmailNotiForAllStaff(String title, String content) {
 		
@@ -156,20 +130,38 @@ public class PhieuChi extends Model<PhieuChi> {
 		}
 	}
 
-	public List<NhanVien> queryListNhanVien() {
-		return core().getNhanViens().getTargetQueryNhanVien().fetch();
-	}
-	public List<ChiTietPhieuChi> queryListChiTietPhieuChi(long id) {
-		return core().getChiTietPhieuChis().queryListChiTietPhieuChi(id).fetch();
-	}
-	
 	@SuppressWarnings("serial")
 	private List<ChiTietPhieuChi> listItemCTPC = new ArrayList<ChiTietPhieuChi>() {
 		{
 			add(new ChiTietPhieuChi("tên khoản chi", 0));
 		}
 	};
-
+	
+	public List<NhanVien> queryListNhanVien() {
+		return core().getNhanViens().getTargetQueryNhanVien().fetch();
+	}
+	public List<ChiTietPhieuChi> queryListChiTietPhieuChi(long id) {
+		return core().getChiTietPhieuChis().queryListChiTietPhieuChi(id).fetch();
+	}
+	public double getTongSoTien() {
+		return tongSoTien;
+	}
+	public void setTongSoTien(double tongSoTien) {
+		this.tongSoTien = tongSoTien;
+	}
+	public String getLyDo() {
+		return lyDo;
+	}
+	public void setLyDo(String lyDo) {
+		this.lyDo = lyDo;
+	}
+	@ManyToOne
+	public NhanVien getNguoiChi() {
+		return nguoiChi;
+	}
+	public void setNguoiChi(NhanVien nguoiChi) {
+		this.nguoiChi = nguoiChi;
+	}
 	@Transient
 	public List<ChiTietPhieuChi> getListItemCTPC() {
 		return listItemCTPC;

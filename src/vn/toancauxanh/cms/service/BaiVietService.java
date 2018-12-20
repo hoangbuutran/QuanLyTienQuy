@@ -22,6 +22,7 @@ public class BaiVietService extends BasicService<BaiViet> {
 	private boolean updateThanhCong = true;
 	
 	public JPAQuery<BaiViet> getTargetQuery() {
+		
 		long chude = MapUtils.getLongValue(argDeco(), Labels.getLabel("param.category"));
 		String paramTuKhoa = MapUtils.getString(argDeco(), Labels.getLabel("param.tukhoa"), "").trim();
 		long tacGia = MapUtils.getLongValue(argDeco(), Labels.getLabel("param.tacgia"));

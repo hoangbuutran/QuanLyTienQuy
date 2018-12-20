@@ -12,11 +12,13 @@ import java.util.TimeZone;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.zkoss.bind.BindUtils;
 import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Filedownload;
+import org.zkoss.zul.Window;
 
 import vn.toancauxanh.gg.model.FileEntry;
 import vn.toancauxanh.service.BaseObject;
@@ -73,6 +75,18 @@ public class FrontService extends BaseObject<FrontService> {
 		return new String[0];
 	}
 
+	@Command
+	public void invokeGG(@BindingParam("notify") Object vmArgs, @BindingParam("attr") String attrs, @BindingParam("detach") final Window wdn) {
+		for (final String field : attrs.split("\\|")) {
+			if (!field.isEmpty()) {
+				BindUtils.postNotifyChange(null, null, vmArgs, field);
+			}
+		}
+		if (wdn != null) {
+			wdn.detach();
+		}
+	}
+	
 	protected List<Long> arrayStringToListLong(String[] ids) {
 		if (ids != null && ids.length > 0) {
 			List<Long> longIds = new ArrayList<Long>();

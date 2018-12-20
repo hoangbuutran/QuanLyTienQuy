@@ -218,6 +218,36 @@ public class VaiTro extends Model<VaiTro> {
 		quyens1.add(core().CARLIST);
 		quyens1.add(core().CARXOA);
 		
+		quyens1.add(core().TODAIBIEUTHEM);
+		quyens1.add(core().TODAIBIEUSUA);
+		quyens1.add(core().TODAIBIEUXEM);
+		quyens1.add(core().TODAIBIEULIST);
+		quyens1.add(core().TODAIBIEUXOA);
+		
+		quyens1.add(core().LINHVUCHOIDAPTHEM);
+		quyens1.add(core().LINHVUCHOIDAPSUA);
+		quyens1.add(core().LINHVUCHOIDAPXEM);
+		quyens1.add(core().LINHVUCHOIDAPLIST);
+		quyens1.add(core().LINHVUCHOIDAPXOA);
+		
+		quyens1.add(core().HOIDAPTHEM);
+		quyens1.add(core().HOIDAPSUA);
+		quyens1.add(core().HOIDAPXEM);
+		quyens1.add(core().HOIDAPLIST);
+		quyens1.add(core().HOIDAPXOA);
+		
+		quyens1.add(core().DUANTHEM);
+		quyens1.add(core().DUANSUA);
+		quyens1.add(core().DUANXEM);
+		quyens1.add(core().DUANLIST);
+		quyens1.add(core().DUANXOA);
+		
+		quyens1.add(core().CONGVIECTHEM);
+		quyens1.add(core().CONGVIECSUA);
+		quyens1.add(core().CONGVIECXEM);
+		quyens1.add(core().CONGVIECLIST);
+		quyens1.add(core().CONGVIECXOA);
+		
 		quyens1.add(core().THUTIENTHEM);
 		quyens1.add(core().THUTIENSUA);
 		quyens1.add(core().THUTIENXEM);

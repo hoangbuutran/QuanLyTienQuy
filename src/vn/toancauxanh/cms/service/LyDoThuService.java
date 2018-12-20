@@ -12,9 +12,7 @@ import org.zkoss.util.resource.Labels;
 import com.querydsl.jpa.impl.JPAQuery;
 
 import vn.toancauxanh.gg.model.LyDoThu;
-import vn.toancauxanh.gg.model.PhieuChi;
 import vn.toancauxanh.gg.model.QLyDoThu;
-import vn.toancauxanh.gg.model.QPhieuChi;
 import vn.toancauxanh.service.BasicService;
 import vn.toancauxanh.service.ExcelUtil;
 
@@ -26,7 +24,40 @@ public class LyDoThuService extends BasicService<LyDoThu> {
 		String paramTrangThaiThuTien = MapUtils.getString(argDeco(), Labels.getLabel("param.trangthaithutien"), "");
 
 		JPAQuery<LyDoThu> q = find(LyDoThu.class).where(QLyDoThu.lyDoThu.trangThai.ne(core().TT_DA_XOA))
-				.where(QLyDoThu.lyDoThu.quy.isTrue());
+				.where(QLyDoThu.lyDoThu.loaiThu.eq(core().LOAI_THU_QUY));
+		
+		if (paramTuKhoa != null && !paramTuKhoa.isEmpty()) {
+			String tukhoa = "%" + paramTuKhoa + "%";
+			q.where(QLyDoThu.lyDoThu.lyDoContent.like(tukhoa));
+		}
+		
+		if (getFixTuNgay() != null && getFixDenNgay() == null) {
+			q.where(QLyDoThu.lyDoThu.ngayTao.after(getFixTuNgay()));
+		} else if (getFixTuNgay() == null && getFixDenNgay() != null) {
+			q.where(QLyDoThu.lyDoThu.ngayTao.before(getFixDenNgay()));
+		} else if (getFixTuNgay() != null && getFixDenNgay() != null) {
+			q.where(QLyDoThu.lyDoThu.ngayTao.between(getFixTuNgay(), getFixDenNgay()));
+		}
+		
+		if ("da_hoan_thanh".equals(paramTrangThaiThuTien)) {
+			q.where(QLyDoThu.lyDoThu.complete.eq(core().TT_THU_DA_HOAN_THANH));
+		}
+		
+		if ("chua_hoan_thanh".equals(paramTrangThaiThuTien)) {
+			q.where(QLyDoThu.lyDoThu.complete.eq(core().TT_THU_CHUA_HOAN_THANH));
+		}
+		
+		q.orderBy(QLyDoThu.lyDoThu.ngayTao.desc());
+		return q;
+	}
+	
+	public JPAQuery<LyDoThu> getTargetQueryPhatSinh() {
+
+		String paramTuKhoa = MapUtils.getString(argDeco(), Labels.getLabel("param.tukhoa"), "").trim();
+		String paramTrangThaiThuTien = MapUtils.getString(argDeco(), Labels.getLabel("param.trangthaithutien"), "");
+
+		JPAQuery<LyDoThu> q = find(LyDoThu.class).where(QLyDoThu.lyDoThu.trangThai.ne(core().TT_DA_XOA))
+				.where(QLyDoThu.lyDoThu.loaiThu.eq(core().LOAI_THU_PHAT_SINH));
 		
 		if (paramTuKhoa != null && !paramTuKhoa.isEmpty()) {
 			String tukhoa = "%" + paramTuKhoa + "%";
@@ -59,7 +90,7 @@ public class LyDoThuService extends BasicService<LyDoThu> {
 		String paramTuKhoa = MapUtils.getString(argDeco(), Labels.getLabel("param.tukhoa"), "").trim();
 
 		JPAQuery<LyDoThu> q = find(LyDoThu.class).where(QLyDoThu.lyDoThu.trangThai.ne(core().TT_DA_XOA))
-				.where(QLyDoThu.lyDoThu.quy.isFalse());
+				.where(QLyDoThu.lyDoThu.loaiThu.eq(core().LOAI_THU_DU));
 		
 		if (paramTuKhoa != null && !paramTuKhoa.isEmpty()) {
 			String tukhoa = "%" + paramTuKhoa + "%";
@@ -88,7 +119,7 @@ public class LyDoThuService extends BasicService<LyDoThu> {
 			List<Object[]> list = new ArrayList<Object[]>();
 			
 		    List<LyDoThu> lyDoThus = find(LyDoThu.class).where(QLyDoThu.lyDoThu.trangThai.ne(core().TT_DA_XOA))
-					.where(QLyDoThu.lyDoThu.quy.isFalse()).fetch();
+					.where(QLyDoThu.lyDoThu.loaiThu.eq(core().LOAI_THU_DU)).fetch();
 		    
 		    int i = 1;
 		    double tongTienThu = 0;

@@ -1,3 +1,161 @@
-<header xmlns:zk="zk" xmlns:z="zul" >
-		Hello Header
+
+
+<header xmlns:zk="zk" xmlns:z="zul" class="wrapper-main">
+
+
+		<style>
+			.dropdown-menu>.active>a, .dropdown-menu>.active>a:focus, .dropdown-menu>.active>a:hover {
+				background-color: #f6b340;
+			}
+			.list-menu-top .dropdown-menu {
+				background-color: #e13228;
+			}
+			.show-hover:hover > ul.dropdown-menu {
+			    display: block;    
+			}
+			.logo-header {
+				position: absolute;
+			}
+			.wrapper-header .slogan-header {
+				float: none;
+	    		text-align: center;
+	   			padding: 14px 0px 20px 0px;
+			}
+			.link-first-slogan-header {
+				color: #8e2222;
+				font-size: 18px;
+				font-weight: 600;
+			}
+			.navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:focus {
+				background-color: #f6b340;
+		    	color: #fff;
+			}
+			@media (max-width: 767px) {
+				.link-first-slogan-header {
+					font-size: 13px;
+				}
+			}
+			@media (max-width: 360px) {
+				.link-first-slogan-header {
+					font-size: 10px;
+				}
+			}
+			
+			.nav-pills>li.active>a, .nav-pills>li:focus>a, .nav-pills>li:hover>a {
+				background-color: #e13228 !important;
+			}
+			.nav-pills>li.active>a:hover, .nav-pills>li:focus>a:hover, .nav-pills>li:hover>a:hover {
+				background-color: #e13228;
+			}
+			.nav-pills>li.active>a:after, .nav-pills>li:focus>a:after, .nav-pills>li:hover>a:after {
+				border-top: 6px solid #e13228;
+			}
+		</style>
+
+
+      <div class="wrapper-header">
+        <div class="container-fluid">
+          <div class="center">
+         	 <div class="logo-header">
+              	<a class="test-img" href="${execution.contextPath}"><image class="img-logo-header" src="${urlImage}/assetsfe/images/logo.png" alt="logo header"></image>
+            		<image class="img-trong" src="${urlImage}/assetsfe/images/trong.png"></image>
+         		</a>
+            </div>
+            <div class="slogan-header">
+            	<a class="link-first-slogan-header" href="${execution.contextPath}">CỔNG THÔNG TIN ĐIỆN TỬ VÀ CHỈ ĐẠO ĐIỀU HÀNH</a>
+            	<h1><a class="link-slogan-header" href="${execution.contextPath}">HỘI ĐỒNG NHÂN DÂN HUYỆN HÒA VANG</a></h1>
+            </div>
+          </div>
+        </div>
+      </div>
+      <nav  class="navbar navbar-default">
+        <div  class="container-fluid">
+          <div class="center">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse">
+              <ul class="nav navbar-nav">
+                <li class="list-menu-top"><a class="link-menu" href="${execution.contextPath}">Trang chủ<span class="sr-only">(current)</span></a></li>
+
+                <li class="show-hover list-menu-top">
+                	 <a class="link-menu" href="/gioithieu/42">Giới thiệu</a>
+					<ul class="dropdown-menu mega-dropdown-menu row">
+					   <li class="list-menu-top">
+	                       <a class="link-menu " href="/gioithieusanpham/63">giới thiệu sản phẩm</a>
+	                   </li>
+					</ul>
+                </li>         
+                <li class="show-hover list-menu-top">
+                	 <a class="link-menu" href="/tintuc/41">Tin tức</a>
+					<ul class="dropdown-menu mega-dropdown-menu row">
+					   <li class="list-menu-top">
+	                       <a class="link-menu " href="/thuongtruchdndhuyen/1">Thường trực HĐND Huyện</a>
+	                   </li><li class="list-menu-top">
+	                       <a class="link-menu " href="/cacbanhdndhuyen/2">Các ban HĐND huyện</a>
+	                   </li><li class="list-menu-top">
+	                       <a class="link-menu " href="/hdndxa/3">Hội đồng nhân dân xã</a>
+	                   </li>
+					</ul>
+                </li>
+                <li class="show-hover list-menu-top active">
+                	 <a class="link-menu" href="${execution.contextPath}/hoi-dap">Tương tác với cử tri</a>
+					<ul class="dropdown-menu mega-dropdown-menu row">
+					   <li class="list-menu-top">
+	                       <a class="link-menu " href="/traloiykiencutri">Kênh trả lời ý kiến cử tri</a>
+	                   </li>
+	                   <li class="list-menu-top">
+	                       <a class="link-menu " href="/traloidonthu">Kênh kết quả giải quyết đơn thư</a>
+	                   </li>
+	                    <li class="list-menu-top">
+	                       <a class="link-menu " href="/doithoaitructuyen">Kênh đối thoại trực tuyến</a>
+	                   </li>
+	                   <li class="list-menu-top">
+	                       <a class="link-menu " href="/dangkytiepdan">Kênh đăng ký tiếp dân trực tuyến</a>
+	                   </li>
+	                   <li class="list-menu-top">
+	                       <a class="link-menu " href="/gopychuyende">Kênh cùng cử tri giám sát</a>
+	                   </li>
+	                   <li class="list-menu-top active">
+	                       <a class="link-menu active" href="${execution.contextPath}/hoi-dap">Kênh góp ý và hỏi đáp</a>
+	                   </li>
+					</ul>
+                </li>
+                <li class="list-menu-top "><a class="link-menu" href="/hoatdongchidaodieuhanh">Hoạt động chỉ đạo điều hành</a></li>
+                <li  class="list-menu-top"><a class="link-menu" href="/daibieu">Đại biểu HĐND</a></li>
+
+                <li class="show-hover list-menu-top">
+                	 <a  class="link-menu" href="/lienhe/45">Liên hệ</a>
+					<ul class="dropdown-menu mega-dropdown-menu row">
+					   <li class="list-menu-top">
+	                       <a class="link-menu " href="/congkhaisodienthoaiemail/47">Công khai số điện thoại, email</a>
+	                   </li><li class="list-menu-top">
+	                       <a class="link-menu " href="/thongtinnguoiphatngon/48">Thông tin người phát ngôn</a>
+	                   </li><li class="list-menu-top">
+	                       <a class="link-menu " href="/banbientapwebsite/49">Ban biên tập website</a>
+	                   </li>
+					</ul>
+                </li>
+              </ul>
+              <div class="navbar-form navbar-right">
+                <div class="form-group">
+                  <input style="padding-right: 32px;" class="form-control ip-search-top z-textbox" value="" type="text" placeholder="Tìm kiếm">
+                  <button type="submit" class="btn btn-default icon-search btn-search-top"></button>
+                </div>
+              </div>
+            </div>
+            <!-- /.navbar-collapse -->
+          </div>
+        </div>
+        <!-- /.container-fluid -->
+      </nav>
+
  </header>

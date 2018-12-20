@@ -3,6 +3,7 @@
 	viewModel="@id('vm') @init('vn.toancauxanh.cms.service.BaiVietService')">
 	<zscript><![CDATA[
 		self.page.title= "Quản lý bài viết";
+		//vm.arg.put("", id); //cha truyền dữ liệu sang trang con nhận lại id cha 
 	]]></zscript>
 	<n:section class="content-header">
 		<n:h1 class="header-title">Danh sách bài viết</n:h1>
@@ -143,8 +144,8 @@
     					<n:div class="dataTables_wrapper form-inline dt-bootstrap">
     						<n:div class="row">
     							<n:div class="col-md-12">
-    								<grid model="@load(vm.page(vm.targetQuery).fetch())" width="100%" id="grid"
-								emptyMessage="Danh sách không có bài viết nào" class="hidden-xs">
+    							<grid model="@load(vm.page(vm.targetQuery).fetch())" width="100%" id="grid"
+									emptyMessage="Danh sách không có bài viết nào" class="hidden-xs">
 								<columns>
 									<column label="STT" hflex="min" sclass="text-align-center"/>
 									<column label="Tiêu đề" />

@@ -21,7 +21,7 @@
 							<x:label>Người chi<n:small class="required"> *</n:small></x:label>
 						</hlayout>
 						<vlayout>
-							<combobox placeholder="Chọn người chi quỹ" model="@load(nhanViens.nhanViensAndNull)" value="@load(vm.nguoiChi ne null ? vm.nguoiChi.hoVaTen : 'Chọn người chi')" 
+							<combobox placeholder="Chọn người chi quỹ" model="@load(nhanViens.listNhanVien)" value="@load(vm.nguoiChi ne null ? vm.nguoiChi.hoVaTen : 'Chọn người chi')" 
 								selectedItem="@bind(vm.nguoiChi) @save(vm.nguoiChi, before={'savePhieuChi'}) @validator('vn.toancauxanh.vm.BaseValid', constraint='no empty')" width="99%" readonly="true">
 								<template name="model">
 								    <comboitem label="@load(each.hoVaTen)" ></comboitem>

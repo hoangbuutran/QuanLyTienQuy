@@ -120,9 +120,15 @@ public final class NhanVienService extends BasicService<NhanVien> {
 		return list;
 	}
 	
-	public List<NhanVien> getNhanViensAndNull() {
-		// TODO add them dk nhan vien là tác giả
+	public List<NhanVien> getListNhanVien() {
 		List<NhanVien> list = new ArrayList<>();
+		list.addAll(getTargetQueryNhanVien().fetch());
+		return list;
+	}
+	
+	public List<NhanVien> getListNhanVienAndNull() {
+		List<NhanVien> list = new ArrayList<>();
+		list.add(null);
 		list.addAll(getTargetQueryNhanVien().fetch());
 		return list;
 	}

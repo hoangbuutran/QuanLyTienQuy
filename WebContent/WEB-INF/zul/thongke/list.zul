@@ -25,7 +25,7 @@
 	    			<n:div class="box-body">
 	    				<n:div class="row">
 	    					<n:div class="col-md-12">
-				    			<n:div class="col-sm-4 col-md-4">
+				    			<n:div class="col-sm-6 col-md-4">
 									<div class="form-group">
 			   							<x:label>Tháng</x:label>
 			   							<combobox placeholder="Tháng" readonly="true"
@@ -38,7 +38,7 @@
 										</combobox>
 									</div>
 								</n:div>
-								<n:div class="col-sm-4 col-md-4">
+								<n:div class="col-sm-6 col-md-4">
 									<div class="form-group">
 			   							<x:label>Năm</x:label>
 			   							<combobox placeholder="Năm" readonly="true"
@@ -51,13 +51,18 @@
 										</combobox>
 									</div>
 								</n:div>
-								<n:div class="col-sm-4 col-md-4">
+								<n:div class="col-sm-6 col-md-2">
 			   						<x:label class="control-label">&#160;</x:label>
 			   						<n:div class="form-group text-center">
-			   							<x:button class="btn btn-warning" type="button" onClick="@command('cmd', notify=vm, attr='*')" >
+			   							<x:button class="btn btn-warning" type="button" onClick="@command('onChangeThongKe', notify=vm)" >
 											<n:i class="fa fa-search"></n:i> Thống kê
 										</x:button>
-										<x:button class="btn btn-warning" type="button" onClick="@command('exportExcelThuChi')" >
+			   						</n:div>
+			   					</n:div>
+			   					<n:div class="col-sm-6 col-md-2">
+			   						<x:label class="control-label">&#160;</x:label>
+			   						<n:div class="form-group text-center">
+										<x:button hflex="1" class="btn btn-warning" type="button" onClick="@command('exportExcelThuChi')" >
 											Export Excel
 										</x:button>
 			   						</n:div>

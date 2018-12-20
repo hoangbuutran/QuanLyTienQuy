@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections.MapUtils;
+import org.zkoss.bind.BindUtils;
+import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.util.resource.Labels;
 
@@ -48,7 +50,7 @@ public class ThongKeService extends BasicService<LyDoThu> {
 		
 		List<ThuTien> thuTiens = q.fetch();
 		
-		// vòng lặp tính tổng số tình có trong list thuTiens
+		// vòng lặp tính tổng số tiền có trong list thuTiens
 		for (ThuTien thuTien : thuTiens) {
 			toTalThu += thuTien.getLyDoThu().getSoTien();
 		}
@@ -67,19 +69,16 @@ public class ThongKeService extends BasicService<LyDoThu> {
 		if (!thang.isEmpty() && nam.isEmpty()) {
 			showNotification("năm chưa được chọn !", "", "warning");
 		}
-		
 		// tháng được chọn, năm được chọn
 		if (!thang.isEmpty() && !nam.isEmpty()) {
 			q.where(QPhieuChi.phieuChi.ngayTao.month().eq(Integer.parseInt(thang)).and(QPhieuChi.phieuChi.ngayTao.year().eq(Integer.parseInt(nam))));
 		}
-		
 		// năm được chọn
 		if (thang.isEmpty() && !nam.isEmpty()) {
 			q.where(QPhieuChi.phieuChi.ngayTao.year().eq(Integer.parseInt(nam)));
 		}
 		
 		List<PhieuChi> phieuChis = q.fetch();
-		
 		// vòng lặp tính tổng chi có trong list phieuChis
 		for (PhieuChi phieuChi : phieuChis) {
 			toTalChi += phieuChi.getTongSoTien();
@@ -92,35 +91,12 @@ public class ThongKeService extends BasicService<LyDoThu> {
 		return getToTalThu() - getToTalChi();
 	}
 
-	public Map<Integer, String> getListThang() {
-		HashMap<Integer, String> result = new HashMap<>();
-		result.put(null, "");
-		result.put(1, "Tháng 1");
-		result.put(2, "Tháng 2");
-		result.put(3, "Tháng 3");
-		result.put(4, "Tháng 4");
-		result.put(5, "Tháng 5");
-		result.put(6, "Tháng 6");
-		result.put(7, "Tháng 7");
-		result.put(8, "Tháng 8");
-		result.put(9, "Tháng 9");
-		result.put(10, "Tháng 10");
-		result.put(11, "Tháng 11");
-		result.put(12, "Tháng 12");
-		return result;
+	@Command
+	public void onChangeThongKe(@BindingParam("notify") final Object listObject) {
+		BindUtils.postNotifyChange(null, null, listObject, "toTalThu");
+		BindUtils.postNotifyChange(null, null, listObject, "toTalChi");
+		BindUtils.postNotifyChange(null, null, listObject, "soDu");
 	}
-	
-	public Map<Integer, String> getListNam() {
-		HashMap<Integer, String> result = new HashMap<>();
-		result.put(null, "");
-		int year = 2010;
-		int yearCurent = Calendar.getInstance().get(Calendar.YEAR) + 12;
-		int subYear = yearCurent - year;
-        for (int i = 0; i <= subYear; i++) {
-			result.put(yearCurent - i, "Năm " + (yearCurent - i));
-		}
-		return result;
-	}	
 	
 	@Command
 	public void exportExcelThuChi() {
@@ -130,11 +106,10 @@ public class ThongKeService extends BasicService<LyDoThu> {
 			// combobox năm chưa được chọn
 			showNotification("Năm chưa được chọn để thống kê!", "", "warning");
 			return;
-			
+
 		} else {
 			
 			List<Object[]> list = new ArrayList<Object[]>();
-			
 			try {
 				// lấy ra thu thuộc năm muốn thống kê
 				List<ThuTien> thuTiens = find(ThuTien.class).where(QThuTien.thuTien.trangThai.ne(core().TT_DA_XOA))
@@ -182,10 +157,40 @@ public class ThongKeService extends BasicService<LyDoThu> {
 				ExcelUtil.exportThuChi("Thống kê thu chi năm " + nam, "Thống kê thu chi " + nam, nam, list);
 				
 			} catch (IOException e) {
-				System.out.println("Error: "+ e.getMessage());
+				System.out.println("Error: "+ this + e.getMessage());
 				e.printStackTrace();
 			}
 		}
 	}
+
+	public Map<Integer, String> getListThang() {
+		HashMap<Integer, String> result = new HashMap<>();
+		result.put(null, "");
+		result.put(1, "Tháng 1");
+		result.put(2, "Tháng 2");
+		result.put(3, "Tháng 3");
+		result.put(4, "Tháng 4");
+		result.put(5, "Tháng 5");
+		result.put(6, "Tháng 6");
+		result.put(7, "Tháng 7");
+		result.put(8, "Tháng 8");
+		result.put(9, "Tháng 9");
+		result.put(10, "Tháng 10");
+		result.put(11, "Tháng 11");
+		result.put(12, "Tháng 12");
+		return result;
+	}
+	
+	public Map<Integer, String> getListNam() {
+		HashMap<Integer, String> result = new HashMap<>();
+		result.put(null, "");
+		int year = 2015;
+		int yearCurent = Calendar.getInstance().get(Calendar.YEAR) + 12;
+		int subYear = yearCurent - year;
+		for (int i = 0; i <= subYear; i++) {
+			result.put(yearCurent - i, "Năm " + (yearCurent - i));
+		}
+		return result;
+	}	
 	
 }

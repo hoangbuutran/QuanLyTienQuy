@@ -2,7 +2,6 @@ package vn.toancauxanh.gg.model;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -16,11 +15,8 @@ import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.validator.AbstractValidator;
 import org.zkoss.zul.Window;
 
-import com.querydsl.jpa.impl.JPAQuery;
-
 import vn.toancauxanh.model.Model;
 import vn.toancauxanh.model.NhanVien;
-import vn.toancauxanh.model.QNhanVien;
 import vn.toancauxanh.service.BasicService;
 import vn.toancauxanh.service.SendEmail;
 
@@ -29,54 +25,27 @@ import vn.toancauxanh.service.SendEmail;
 public class LyDoThu extends Model<LyDoThu> {
 
 	private double soTien;
-	private String lyDoContent = "Nộp tiền quỹ tháng: \"" + (Calendar.getInstance().get(Calendar.MONTH)+1) + "\" - năm: \"" + Calendar.getInstance().get(Calendar.YEAR) + "\"";
+	private String loaiThu;
 	private String complete;
-	private boolean quy = true;
-
+	private String lyDoContent = "";
+	
 	List<ThuTien> modelThuTien = new ArrayList<ThuTien>();
 
 	public LyDoThu() {
 		super();
 	}
-	public LyDoThu(double soTien, String lyDoContent, String complete, boolean quy) {
+	public LyDoThu(double soTien, String lyDoContent, String complete) {
 		super();
 		this.soTien = soTien;
 		this.lyDoContent = lyDoContent;
 		this.complete = complete;
-		this.quy = quy;
 	}
 
-	public boolean isQuy() {
-		return quy;
-	}
-	public void setQuy(boolean quy) {
-		this.quy = quy;
-	}
-	public double getSoTien() {
-		return soTien;
-	}
-	public void setSoTien(double soTien) {
-		this.soTien = soTien;
-	}
-	public String getLyDoContent() {
-		return lyDoContent;
-	}
-	public void setLyDoContent(String lyDoContent) {
-		this.lyDoContent = lyDoContent;
-	}
-	public String getComplete() {
-		return complete;
-	}
-	public void setComplete(String complete) {
-		this.complete = complete;
-	}
-
-	// tạo mới lý do thu (tương ứng với thu tiền quỹ).
+	// tạo mới lý do thu quỹ
 	@Command
-	public void saveLyDoThu(@BindingParam("list") final Object listObject, @BindingParam("attr") final String attr, @BindingParam("wdn") final Window wdn) throws IOException {
+	public void saveLyDoThuQuy(@BindingParam("list") final Object listObject, @BindingParam("attr") final String attr, @BindingParam("wdn") final Window wdn) throws IOException {
 		if (noId()) { // tạo mới lý do
-			saveQuyAndAddThuTien();
-			// sendEmailNotiForAllStaff(String title, String content)
+			saveLyDoThuAndAddThuTienQuy();
 		} else { // cập nhật lý do
 			save();
 		}
@@ -84,9 +53,35 @@ public class LyDoThu extends Model<LyDoThu> {
 		BindUtils.postNotifyChange(null, null, listObject, attr);
 	}
 
-	// lưu lý do thu và thêm dữ liệu vào bảng thu tiền ứng với số nhân viên(được gọi từ hàm saveLyDoThu)
-	public void saveQuyAndAddThuTien() {
-		setQuy(true);
+	// lưu lý do thu và thêm dữ liệu vào bảng thu tiền ứng với số nhân viên
+	public void saveLyDoThuAndAddThuTienQuy() {
+		setLoaiThu(core().LOAI_THU_QUY);
+		setComplete(core().TT_THU_CHUA_HOAN_THANH);
+		save();
+		
+		List<NhanVien> nhanViens = new ArrayList<>();
+		nhanViens.addAll(queryListNhanVien());
+		
+		for (NhanVien nhanVien : nhanViens) {
+			ThuTien thuTien = new ThuTien(this, nhanVien, false);
+			thuTien.save();
+		}
+	}
+	
+	// tạo mới lý do thu phat sinh 
+	@Command
+	public void saveLyDoThuPhatSinh(@BindingParam("list") final Object listObject, @BindingParam("attr") final String attr, @BindingParam("wdn") final Window wdn) throws IOException {
+		if (noId()) { // tạo mới lý do
+			saveLyDoThuAndAddThuTienPhatSinh();
+		} else { // cập nhật lý do
+			save();
+		}
+		wdn.detach();
+		BindUtils.postNotifyChange(null, null, listObject, attr);
+	}
+
+	public void saveLyDoThuAndAddThuTienPhatSinh() {
+		setLoaiThu(core().LOAI_THU_PHAT_SINH);
 		setComplete(core().TT_THU_CHUA_HOAN_THANH);
 		save();
 		
@@ -114,10 +109,9 @@ public class LyDoThu extends Model<LyDoThu> {
 	@Command
 	public void saveThuKhac(@BindingParam("list") final Object listObject, @BindingParam("attr") final String attr, @BindingParam("wdn") final Window wdn) throws IOException {
 
-		if (noId()) { // tạo mới thu tiền khác
+		if (noId()) { // tạo mới 
 			saveThuKhacAndAddThuTien();
-			// sendEmailNotiForAllStaff(String title, String content)
-		} else { // cập nhật thu tiền khác
+		} else { // cập nhật 
 			save();
 		}
 		wdn.detach();
@@ -125,9 +119,9 @@ public class LyDoThu extends Model<LyDoThu> {
 
 	}
 
-	// lưu lý do thu và thêm dữ liệu vào bảng thu tiền (được gọi từ hàm saveThuKhac)
+	// lưu lý do thu và thêm dữ liệu vào bảng thu tiền
 	public void saveThuKhacAndAddThuTien() {
-		setQuy(false);
+		setLoaiThu(core().LOAI_THU_DU);
 		setComplete(core().TT_THU_DA_HOAN_THANH);
 		save();
 		ThuTien thuTien = new ThuTien(this, getNguoiTao(), true);
@@ -194,7 +188,31 @@ public class LyDoThu extends Model<LyDoThu> {
 		};
 	}
 
-
+	public String getLoaiThu() {
+		return loaiThu;
+	}
+	public void setLoaiThu(String loaiThu) {
+		this.loaiThu = loaiThu;
+	}
+	public double getSoTien() {
+		return soTien;
+	}
+	public void setSoTien(double soTien) {
+		this.soTien = soTien;
+	}
+	public String getLyDoContent() {
+		return lyDoContent;
+	}
+	public void setLyDoContent(String lyDoContent) {
+		this.lyDoContent = lyDoContent;
+	}
+	public String getComplete() {
+		return complete;
+	}
+	public void setComplete(String complete) {
+		this.complete = complete;
+	}
+	
 	public List<ThuTien> getThuTienWithLyDo(long id) {
 		return core().getThuTiens().getThuTienWithLyDo(id).fetch();
 	}

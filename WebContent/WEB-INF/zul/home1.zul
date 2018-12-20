@@ -64,6 +64,8 @@
 			chuakichhoat = entry.nhanVienDaKichHoat;
 			dakichhoat = entry.nhanVienDaKichHoat;
 			boolean noiDungActived = entry.noiDungActive.contains(resource);
+			System.out.println("resource: "+ resource);
+			System.out.println("action: "+ action);
 		]]></zscript>
 		<div class="wrapper">
 			<n:header class="main-header">
@@ -200,6 +202,51 @@
 			          			<n:li zk:if="${entry.quyen.phieuchi_lietke}" class="${resource eq 'phieuchi' ? 'active' : ''}">
 									<n:a href="${ctxPath}/cp/phieuchi">
 										<n:i class="fa fa-gear"></n:i> Quản lý phiếu chi
+									</n:a>
+								</n:li>
+			          		</n:ul>
+			      		</n:li>
+			      		<n:li zk:if="${chuakhoa and chuakichhoat and (entry.quyen.duan_lietke|| entry.quyen.congviec_lietke)}"
+			      			class="${resource eq 'duan' || resource eq 'congviec' ? 'active' : ''}">
+			      			<n:a href="javascript:void(0)">
+					        	<n:i class="fa fa-credit-card"></n:i> <n:span>Quản lý dự án</n:span> <n:i class="fa fa-angle-left pull-right"></n:i>
+					        </n:a>
+					        <n:ul class="treeview-menu">
+								<n:li zk:if="${entry.quyen.duan_lietke}" class="${resource eq 'duan' ? 'active' : ''}">
+									<n:a href="${ctxPath}/cp/duan">
+									<n:i class="fa fa-gear"></n:i> Quản lý dự án java
+									</n:a>
+								</n:li>
+			          			
+			          		</n:ul>
+			      		</n:li>
+			      		<n:li zk:if="${chuakhoa and chuakichhoat and (entry.quyen.thutien_lietke || entry.quyen.thongke_lietke || entry.quyen.phieuchi_lietke)}"
+			      			class="${resource eq 'thutien' || resource eq 'thongke' || resource eq 'phieuchi' ? 'active' : ''}">
+			      			<n:a href="javascript:void(0)">
+					        	<n:i class="fa fa-street-view"></n:i> <n:span>Tương tác với cử tri</n:span> <n:i class="fa fa-angle-left pull-right"></n:i>
+					        </n:a>
+					        <n:ul class="treeview-menu">
+								<n:li zk:if="${entry.quyen.thongke_lietke}" class="${resource eq 'thongke' ? 'active' : ''}">
+									<n:a href="${ctxPath}/cp/hoidap">
+									<n:i class="fa fa-gear"></n:i> Quản lý hỏi đáp
+									</n:a>
+								</n:li>
+			          			<n:li zk:if="${entry.quyen.thongke_lietke}" class="${resource eq 'thongke' ? 'active' : ''}">
+									<n:a href="${ctxPath}/cp/linhvuchoidap">
+									<n:i class="fa fa-gear"></n:i> Quản lý lĩnh vực hỏi đáp
+									</n:a>
+								</n:li>
+			          		</n:ul>
+			      		</n:li>
+			      		<n:li zk:if="${chuakhoa and chuakichhoat and (entry.quyen.thutien_lietke || entry.quyen.thongke_lietke || entry.quyen.phieuchi_lietke)}"
+			      			class="${resource eq 'thutien' || resource eq 'thongke' || resource eq 'phieuchi' ? 'active' : ''}">
+			      			<n:a href="javascript:void(0)">
+					        	<n:i class="fa fa-street-view"></n:i> <n:span>Danh mục</n:span> <n:i class="fa fa-angle-left pull-right"></n:i>
+					        </n:a>
+					        <n:ul class="treeview-menu">
+								<n:li zk:if="${entry.quyen.thongke_lietke}" class="${resource eq 'thongke' ? 'active' : ''}">
+									<n:a href="${ctxPath}/cp/todaibieu">
+									<n:i class="fa fa-gear"></n:i> Quản lý tổ đại biểu
 									</n:a>
 								</n:li>
 			          		</n:ul>

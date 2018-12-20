@@ -16,7 +16,7 @@
 						<x:label>Số tiền<n:small class="required"> *</n:small></x:label>
 					</hlayout>
 					<vlayout>
-						<doublebox class="form-control" format=",###.#" width="100%" value="@bind(vm.soTien) @save(vm.soTien, before={'saveThuKhac'}) @validator('vn.toancauxanh.vm.BaseValid', constraint='no empty')" disabled="${!(entry.quyen.thutien_sua)}"></doublebox>
+						<doublebox class="form-control" format=",###.#" width="100%" value="@bind(vm.soTien) @save(vm.soTien, before={'saveThuKhac'}) @validator('vn.toancauxanh.vm.BaseValid', constraint='no empty')" disabled="${!(entry.quyen.thutien_sua)}" instant="true"></doublebox>
 						<label class="error" value="@load(vmsgs[self.previousSibling])"></label>
 					</vlayout>
 				</n:div>

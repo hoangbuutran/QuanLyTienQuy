@@ -67,6 +67,11 @@ public class Asset<T extends Asset<T>> extends Model<T> {
 	}
 	
 	@Transient
+	public String getTrangThaiTraLoiText() {
+		return new BasicService<>().getTrangThaiSoanList().get(getTrangThaiSoan());
+	}
+	
+	@Transient
 	public boolean isDangSoan() {
 		return core().TTS_DANG_SOAN.equals(getTrangThaiSoan());
 	}

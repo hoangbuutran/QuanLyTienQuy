@@ -35,14 +35,19 @@ import vn.toancauxanh.cms.service.BannerService;
 import vn.toancauxanh.cms.service.CarService;
 import vn.toancauxanh.cms.service.CategoryService;
 import vn.toancauxanh.cms.service.ChiTietPhieuChiService;
+import vn.toancauxanh.cms.service.CongViecService;
 import vn.toancauxanh.cms.service.DonViHanhChinhService;
 import vn.toancauxanh.cms.service.DonViService;
+import vn.toancauxanh.cms.service.DuAnService;
+import vn.toancauxanh.cms.service.HoiDapService;
 import vn.toancauxanh.cms.service.ImageService;
 import vn.toancauxanh.cms.service.LanguageService;
+import vn.toancauxanh.cms.service.LinhVucHoiDapService;
 import vn.toancauxanh.cms.service.LyDoThuService;
 import vn.toancauxanh.cms.service.PhieuChiService;
 import vn.toancauxanh.cms.service.ThamSoService;
 import vn.toancauxanh.cms.service.ThuTienService;
+import vn.toancauxanh.cms.service.ToDaiBieuService;
 import vn.toancauxanh.model.VaiTro;
 
 @Configuration
@@ -62,6 +67,13 @@ public class Entry extends BaseObject<Object> {
 	@Value("${trangthai.chuahoanthanh}")
 	public String TT_THU_CHUA_HOAN_THANH = "";
 
+	@Value("${trangthai.thuquy}")
+	public String LOAI_THU_QUY = "";
+	@Value("${trangthai.thuphatsinh}")
+	public String LOAI_THU_PHAT_SINH = "";
+	@Value("${trangthai.thudu}")
+	public String LOAI_THU_DU = "";
+	
 	// No image url
 	public String URL_M_NOIMAGE = "/assetsfe/images/lg_noimage.png";
 	public String URL_S_NOIMAGE = "/assetsfe/images/sm_noimage.png";
@@ -111,6 +123,10 @@ public class Entry extends BaseObject<Object> {
 	
 	@Value("${url.car}")
 	public String CAR = "";
+	@Value("${url.todaibieu}")
+	public String TODAIBIEU = "";
+	@Value("${url.linhvuchoidap}")
+	public String LINHVUCHOIDAP = "";
 	@Value("${url.lydothu}")
 	public String LYDOTHU = "";
 	@Value("${url.thutien}")
@@ -119,7 +135,12 @@ public class Entry extends BaseObject<Object> {
 	public String PHIEUCHI = "";
 	@Value("${url.thongke}")
 	public String THONGKE = "";
-	
+	@Value("${url.duan}")
+	public String DUAN = "";
+	@Value("${url.congviec}")
+	public String CONGVIEC = "";
+	@Value("${url.hoidap}")
+	public String HOIDAP = "";
 	
 	@Value("${url.chude}")
 	public String CATEGORY = "";
@@ -193,6 +214,28 @@ public class Entry extends BaseObject<Object> {
 	@Value("${url.banner}" + ":" + "${action.sua}")
 	public String BANNERSUA = "";
 
+	@Value("${url.duan}" + ":" + "${action.xem}")
+	public String DUANXEM = "";
+	@Value("${url.duan}" + ":" + "${action.them}")
+	public String DUANTHEM = "";
+	@Value("${url.duan}" + ":" + "${action.list}")
+	public String DUANLIST = "";
+	@Value("${url.duan}" + ":" + "${action.xoa}")
+	public String DUANXOA = "";
+	@Value("${url.duan}" + ":" + "${action.sua}")
+	public String DUANSUA = "";
+	
+	@Value("${url.congviec}" + ":" + "${action.xem}")
+	public String CONGVIECXEM = "";
+	@Value("${url.congviec}" + ":" + "${action.them}")
+	public String CONGVIECTHEM = "";
+	@Value("${url.congviec}" + ":" + "${action.list}")
+	public String CONGVIECLIST = "";
+	@Value("${url.congviec}" + ":" + "${action.xoa}")
+	public String CONGVIECXOA = "";
+	@Value("${url.congviec}" + ":" + "${action.sua}")
+	public String CONGVIECSUA = "";
+	
 	@Value("${url.car}" + ":" + "${action.xem}")
 	public String CARXEM = "";
 	@Value("${url.car}" + ":" + "${action.them}")
@@ -203,6 +246,39 @@ public class Entry extends BaseObject<Object> {
 	public String CARXOA = "";
 	@Value("${url.car}" + ":" + "${action.sua}")
 	public String CARSUA = "";
+	
+	@Value("${url.todaibieu}" + ":" + "${action.xem}")
+	public String TODAIBIEUXEM = "";
+	@Value("${url.todaibieu}" + ":" + "${action.them}")
+	public String TODAIBIEUTHEM = "";
+	@Value("${url.todaibieu}" + ":" + "${action.list}")
+	public String TODAIBIEULIST = "";
+	@Value("${url.todaibieu}" + ":" + "${action.xoa}")
+	public String TODAIBIEUXOA = "";
+	@Value("${url.todaibieu}" + ":" + "${action.sua}")
+	public String TODAIBIEUSUA = "";
+	
+	@Value("${url.linhvuchoidap}" + ":" + "${action.xem}")
+	public String LINHVUCHOIDAPXEM = "";
+	@Value("${url.linhvuchoidap}" + ":" + "${action.them}")
+	public String LINHVUCHOIDAPTHEM = "";
+	@Value("${url.linhvuchoidap}" + ":" + "${action.list}")
+	public String LINHVUCHOIDAPLIST = "";
+	@Value("${url.linhvuchoidap}" + ":" + "${action.xoa}")
+	public String LINHVUCHOIDAPXOA = "";
+	@Value("${url.linhvuchoidap}" + ":" + "${action.sua}")
+	public String LINHVUCHOIDAPSUA = "";
+	
+	@Value("${url.hoidap}" + ":" + "${action.xem}")
+	public String HOIDAPXEM = "";
+	@Value("${url.hoidap}" + ":" + "${action.them}")
+	public String HOIDAPTHEM = "";
+	@Value("${url.hoidap}" + ":" + "${action.list}")
+	public String HOIDAPLIST = "";
+	@Value("${url.hoidap}" + ":" + "${action.xoa}")
+	public String HOIDAPXOA = "";
+	@Value("${url.hoidap}" + ":" + "${action.sua}")
+	public String HOIDAPSUA = "";
 	
 	@Value("${url.lydothu}" + ":" + "${action.xem}")
 	public String LYDOTHUXEM = "";
@@ -269,7 +345,7 @@ public class Entry extends BaseObject<Object> {
 
 	// aend
 	public String[] getRESOURCES() {
-		return new String[] { NGUOIDUNG, VAITRO, DONVI,BANNER, CATEGORY, CAR, THUTIEN, PHIEUCHI, LYDOTHU, THONGKE};
+		return new String[] { NGUOIDUNG, VAITRO, DONVI,BANNER, CATEGORY, CAR, LINHVUCHOIDAP, TODAIBIEU, THUTIEN, PHIEUCHI, LYDOTHU, THONGKE, DUAN, CONGVIEC, HOIDAP};
 	}
 
 	public String[] getACTIONS() {
@@ -332,6 +408,16 @@ public class Entry extends BaseObject<Object> {
 		return "forward:/frontend/index.zhtml?&file=/frontend/home/home.zhtml";
 	}
 	
+	@RequestMapping(value = "/{path:.+$}/id/{id:\\d+}")
+	public String idDetail(@PathVariable String path, @PathVariable Long id) {
+		return "forward:/frontend/index.zhtml?resource=" + path + "&file=/frontend/" + path  + "/newdetail.zhtml&id="+ id;
+	}
+	
+	@RequestMapping(value = "/{path:.+$}")
+	public String home(@PathVariable String path) {
+		return "forward:/frontend/index.zhtml?&file=/frontend/" + path + "/home.zhtml";
+	}
+	
 	@RequestMapping(value = "/{path:.+$}/{cat:\\d+}/id/{id:\\d+}")
 	public String newDetail(@PathVariable String path, @PathVariable Long cat, @PathVariable Long id) {
 		return "forward:/frontend/index.zhtml?resource="+path+"&file=/frontend/kyhop/newdetail.zhtml&cat="+cat+"&id="+ id;
@@ -342,7 +428,7 @@ public class Entry extends BaseObject<Object> {
 		return "forward:/frontend/index.zhtml?resource="+path+"&file=/frontend/kyhop/newslist.zhtml&cat="
 				+ cat;
 	}
-	
+
 	// BE
 	@RequestMapping(value = "/cp")
 	public String cp() {
@@ -354,6 +440,12 @@ public class Entry extends BaseObject<Object> {
 		return "forward:/WEB-INF/zul/home1.zul?resource=" + path + "&action=lietke&file=/WEB-INF/zul/" + path
 				+ "/list.zul";
 	}
+	
+	@RequestMapping(value = "/cp/{path:.+$}/id/{id:\\d+}")
+	public String cp(@PathVariable String path, @PathVariable Long id) {
+		return "forward:/WEB-INF/zul/home1.zul?resource=" + path + "&action=lietke&file=/WEB-INF/zul/" + path  + "/add-view.zul&id="+ id;
+	}
+	
 
 	@RequestMapping(value = "/login")
 	public String dangNhapBackend() {
@@ -412,6 +504,25 @@ public class Entry extends BaseObject<Object> {
 	
 	public final LyDoThuService getLyDoThus() {
 		return new LyDoThuService();
+	}
+	
+	public final DuAnService getDuAns() {
+		return new DuAnService();
+	}
+	public final CongViecService getCongViecs() {
+		return new CongViecService();
+	}
+	
+	public final HoiDapService getHoiDaps() {
+		return new HoiDapService();
+	}
+	
+	public final LinhVucHoiDapService getLinhVucHoiDaps() {
+		return new LinhVucHoiDapService();
+	}
+	
+	public final ToDaiBieuService getToDaiBieus() {
+		return new ToDaiBieuService();
 	}
 	
 	public final List<String> getNoiDungActive() {

@@ -739,6 +739,8 @@ public class ExcelUtil {
 		idx++;
 		CellStyle cellStyleLeft = setBorderAndFont(wb, 1, false, 11, "","LEFT");
 		CellStyle cellStyleCenter = setBorderAndFont(wb, 1, false, 11, "","CENTER");
+		CellStyle cellStyleBoldLeft = setBorderAndFont(wb, 1, true, 11, "","LEFT");
+		CellStyle cellStyleBoldCenter = setBorderAndFont(wb, 1, true, 11, "","CENTER");
 		
 		int size_list = list.size();
 
@@ -763,16 +765,16 @@ public class ExcelUtil {
 				row = sheet1.createRow(idx);
 				c = row.createCell(0);			
 				c.setCellValue(ob[0] + "");
-				c.setCellStyle(cellStyleCenter);				
+				c.setCellStyle(cellStyleBoldCenter);				
 				c = row.createCell(1);
 				c.setCellValue(ob[1] + "");
-				c.setCellStyle(cellStyleLeft);				
+				c.setCellStyle(cellStyleBoldLeft);				
 				c = row.createCell(2);
 				c.setCellValue(ob[2] + "");
-				c.setCellStyle(cellStyleLeft);		
+				c.setCellStyle(cellStyleBoldLeft);		
 				c = row.createCell(3);
 				c.setCellValue(ob[3] + "");
-				c.setCellStyle(cellStyleCenter);	
+				c.setCellStyle(cellStyleBoldCenter);	
 			}
 			idx++;
 		}
@@ -785,8 +787,7 @@ public class ExcelUtil {
 		}
 	}
 	
-	public static void exportThuChi(String title, String fileName, 
-			String sheetname, List<Object[]> list) throws IOException {
+	public static void exportThuChi(String title, String fileName, String sheetname, List<Object[]> list) throws IOException {
 		// New Workbook
 		Workbook wb = new XSSFWorkbook();
 		try {
@@ -833,22 +834,40 @@ public class ExcelUtil {
 		idx++;
 		CellStyle cellStyleLeft = setBorderAndFont(wb, 1, false, 11, "","LEFT");
 		CellStyle cellStyleCenter = setBorderAndFont(wb, 1, false, 11, "","CENTER");
-
+		CellStyle cellStyleBoldLeft = setBorderAndFont(wb, 1, true, 11, "","LEFT");
+		CellStyle cellStyleBoldCenter = setBorderAndFont(wb, 1, true, 11, "","CENTER");
+		int size_list = list.size();
 		for (Object[] ob: list) {
-
-			row = sheet1.createRow(idx);
-			c = row.createCell(0);			
-			c.setCellValue(ob[0] + "");
-			c.setCellStyle(cellStyleCenter);				
-			c = row.createCell(1);
-			c.setCellValue(ob[1] + "");
-			c.setCellStyle(cellStyleLeft);				
-			c = row.createCell(2);
-			c.setCellValue(ob[2] + "");
-			c.setCellStyle(cellStyleLeft);
-			c = row.createCell(3);
-			c.setCellValue(ob[3] + "");
-			c.setCellStyle(cellStyleLeft);
+			if ((idx - 1) == size_list) {
+				idx++;
+				row = sheet1.createRow(idx);
+				c = row.createCell(0);			
+				c.setCellValue(ob[0] + "");
+				c.setCellStyle(cellStyleBoldCenter);				
+				c = row.createCell(1);
+				c.setCellValue(String.format("%,.1f", ob[1]) + "");
+				c.setCellStyle(cellStyleBoldLeft);				
+				c = row.createCell(2);
+				c.setCellValue(String.format("%,.1f", ob[2]) + "");
+				c.setCellStyle(cellStyleBoldLeft);
+				c = row.createCell(3);
+				c.setCellValue(String.format("%,.1f", ob[3]) + "");
+				c.setCellStyle(cellStyleBoldLeft);			
+			}else {
+				row = sheet1.createRow(idx);
+				c = row.createCell(0);			
+				c.setCellValue(ob[0] + "");
+				c.setCellStyle(cellStyleCenter);				
+				c = row.createCell(1);
+				c.setCellValue(String.format("%,.1f", ob[1]) + "");
+				c.setCellStyle(cellStyleLeft);				
+				c = row.createCell(2);
+				c.setCellValue(String.format("%,.1f", ob[2]) + "");
+				c.setCellStyle(cellStyleLeft);
+				c = row.createCell(3);
+				c.setCellValue(String.format("%,.1f", ob[3]) + "");
+				c.setCellStyle(cellStyleLeft);
+			}
 			
 			idx++;
 		}

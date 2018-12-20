@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:zk="zk" xmlns:z="zul" xmlns:w="client">
 	<head>
-	  <title>Greenglobal java app</title>
+	  <title>HĐND Hòa Vang</title>
 	  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 	  <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
 	  <meta name="SKYPE_TOOLBAR" content="SKYPE_TOOLBAR_PARSER_COMPATIBLE">
@@ -18,18 +18,26 @@
 	  <meta property="og:type" content="">
 	  <meta property="og:url" content="" />
 	  <!-- include styles.html -->
-	  <!-- link rel="stylesheet" href="${execution.contextPath}/assetsfe/style/custom.css" -->
+	  <link rel="stylesheet" href="${execution.contextPath}/assetsfe/style/minify.css">
+	  <link id="uFwP90" href="https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700&amp;subset=vietnamese" rel="stylesheet">
+	  
+	  <!-- Toastr css -->
+<?style href="/backend/toastr/build/toastr.css" type="text/css" ?>
+	  <!-- Toastr js -->
+<script type="text/javascript" src="/backend/toastr/build/toastr.min.js" />
 	</head>
 	<body>
 	<zscript><![CDATA[               
 		String resource = execution.getParameter("resource");
 		entry = new vn.toancauxanh.service.BaseObject().core();
 		String ctxPath = execution.getContextPath();
+		String serverName = execution.getServerName() + "";
+		String serverPort = execution.getServerPort() + "";
+		String urlImage = "http://" + serverName + ":" + serverPort + "/" + ctxPath;
 	]]></zscript>
 	  <div class="scr-menu"></div>
 	  <div class="wrapper">
 		<z:include src="/frontend/common/header.zhtml"></z:include>
-		<!-- z:include src="/frontend/home/home.zhtml"></z:include -->
   		<z:include src="${execution.getParameter('file')}" instant="true"></z:include>
 		<z:include class="wrap-footer" src="/frontend/common/footer.zhtml"></z:include>
 	  </div>

@@ -1,17 +1,13 @@
 package vn.toancauxanh.gg.model;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import org.zkoss.bind.BindUtils;
 import org.zkoss.bind.annotation.BindingParam;
-import org.zkoss.bind.annotation.Command;
 import org.zkoss.zul.Window;
 
 import vn.toancauxanh.model.Model;

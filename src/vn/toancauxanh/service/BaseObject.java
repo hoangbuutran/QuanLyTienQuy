@@ -240,6 +240,14 @@ public class BaseObject<T> extends CoreObject<T> {
 		result.put("ap_dung", "Áp dụng");
 		return result;
 	}
+	
+	@Transient
+	public final Map<String, String> getTrangThaiHoanThanhList() {
+		HashMap<String, String> result = new HashMap<>();
+		result.put("da_hoan_thanh", "Đã hoàn thành");
+		result.put("chua_hoan_thanh", "Chưa hoàn thành");
+		return result;
+	}
 
 	@Transient
 	public final Map<String, String> getTrangThaiListAndNull() {
@@ -307,7 +315,7 @@ public class BaseObject<T> extends CoreObject<T> {
 	
 	public Map<String, String> getTrangThaiTraLoiList() {
 		HashMap<String, String> result = new HashMap<>();
-		result.put(null, "      ");
+		result.put(null, "");
 		result.put("false", "Chưa trả lời");
 		result.put("true", "Đã trả lời");
 		return result;
